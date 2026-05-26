@@ -1,0 +1,31 @@
+<section class="lookup-layout">
+  <article class="surface-card lookup-panel">
+    <p class="eyebrow">Manage booking</p>
+    <h1 class="section-title">Find your trip by PNR</h1>
+    <p class="section-copy">
+      This screen closes the loop on the airline workflow by letting recruiters test confirmation retrieval
+      and booking review.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="lookup()" class="field-grid">
+      <div class="field">
+        <label>PNR</label>
+        <input type="text" formControlName="pnr" placeholder="SB6Q2P">
+      </div>
+
+      <div class="field">
+        <label>Last name</label>
+        <input type="text" formControlName="lastName" placeholder="Raman">
+      </div>
+
+      <button type="submit" class="button-primary">Find booking</button>
+    </form>
+  </article>
+
+  <article class="surface-card helper-panel">
+    <p class="eyebrow">Demo tip</p>
+    <h2 class="section-title">Try the seeded sample</h2>
+    <p class="section-copy">Use `SB6Q2P` with the last name `Raman`, or create a new booking through the full funnel.</p>
+    <a class="button-secondary" routerLink="/">Create a new booking</a>
+  </article>
+</section>

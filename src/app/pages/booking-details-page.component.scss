@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+
+.details-panel,
+.detail-card,
+.detail-row {
+  display: grid;
+  gap: 1rem;
+}
+
+.details-panel {
+  padding: 1.5rem;
+}
+
+.header-row,
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.detail-card {
+  padding: 1.2rem;
+}
+
+.detail-row {
+  padding: 0.9rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.detail-row span {
+  color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}

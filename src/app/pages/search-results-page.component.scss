@@ -1,0 +1,131 @@
+:host {
+  display: block;
+}
+
+.content-card,
+.sidebar-card,
+.result-card,
+.progress-card,
+.selected-card,
+.complete-state {
+  display: grid;
+  gap: 1rem;
+}
+
+.progress-strip,
+.result-main,
+.selected-card {
+  display: flex;
+  gap: 1rem;
+}
+
+.progress-strip {
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+}
+
+.progress-card,
+.result-card,
+.selected-card,
+.complete-state {
+  padding: 1rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.progress-card {
+  min-width: 12rem;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.74);
+  cursor: pointer;
+}
+
+.progress-card.complete {
+  border-color: rgba(15, 118, 110, 0.3);
+}
+
+.progress-card.current {
+  border-color: rgba(14, 116, 144, 0.38);
+  background: rgba(236, 254, 255, 0.78);
+}
+
+.progress-card span,
+.result-main p,
+.selected-card p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.progress-card strong,
+.result-side strong {
+  font-size: 1.1rem;
+}
+
+.results-list,
+.selected-itinerary {
+  display: grid;
+  gap: 1rem;
+}
+
+.result-card {
+  grid-template-columns: minmax(0, 1.4fr) auto;
+  align-items: center;
+}
+
+.result-main {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-main strong {
+  display: block;
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+}
+
+.result-main span,
+.result-side span,
+.result-center small {
+  color: var(--text-muted);
+}
+
+.result-center {
+  min-width: 13rem;
+  text-align: center;
+}
+
+.line {
+  height: 2px;
+  margin: 0.55rem 0;
+  background: linear-gradient(90deg, rgba(14, 116, 144, 0.12), rgba(14, 116, 144, 0.65), rgba(14, 116, 144, 0.12));
+}
+
+.result-side {
+  display: grid;
+  gap: 0.65rem;
+  justify-items: end;
+}
+
+.small {
+  min-height: auto;
+  padding: 0.55rem 0.9rem;
+}
+
+@media (max-width: 980px) {
+  .result-card {
+    grid-template-columns: 1fr;
+  }
+
+  .result-side {
+    justify-items: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .result-main,
+  .selected-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

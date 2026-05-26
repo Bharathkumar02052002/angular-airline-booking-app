@@ -1,0 +1,127 @@
+<section class="page-grid">
+  <div class="content-card surface-card">
+    <p class="eyebrow">Traveller information</p>
+    <h1 class="section-title">Add passenger and contact details</h1>
+    <p class="section-copy">
+      This step is built with Angular Reactive Forms and validation so it looks like a real booking flow
+      instead of a static mockup.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="field-grid">
+      <section class="traveller-card surface">
+        <h2>Primary contact</h2>
+        <div formGroupName="contact" class="form-grid">
+          <div class="field span-4">
+            <label>Email address</label>
+            <input type="email" formControlName="email" placeholder="traveller@example.com">
+            @if (controlInvalid(form.get('contact.email'))) {
+              <span class="field-error">Enter a valid email address.</span>
+            }
+          </div>
+          <div class="field span-4">
+            <label>Mobile number</label>
+            <input type="tel" formControlName="phone" placeholder="9876543210">
+            @if (controlInvalid(form.get('contact.phone'))) {
+              <span class="field-error">Enter a reachable phone number.</span>
+            }
+          </div>
+          <div class="field span-4">
+            <label>City</label>
+            <input type="text" formControlName="city" placeholder="Chennai">
+          </div>
+        </div>
+      </section>
+
+      <div formArrayName="passengers" class="field-grid">
+        @for (passenger of passengerArray.controls; track $index) {
+          <section class="traveller-card" [formGroupName]="$index">
+            <div class="traveller-heading">
+              <div>
+                <span class="pill success">{{ passengerManifest[$index] }}</span>
+                <h2>Passenger {{ $index + 1 }}</h2>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field span-2">
+                <label>Title</label>
+                <select formControlName="title">
+                  <option value="Mr">Mr</option>
+                  <option value="Ms">Ms</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Master">Master</option>
+                </select>
+              </div>
+
+              <div class="field span-3">
+                <label>First name</label>
+                <input type="text" formControlName="firstName">
+                @if (controlInvalid(passenger.get('firstName'))) {
+                  <span class="field-error">First name is required.</span>
+                }
+              </div>
+
+              <div class="field span-3">
+                <label>Last name</label>
+                <input type="text" formControlName="lastName">
+                @if (controlInvalid(passenger.get('lastName'))) {
+                  <span class="field-error">Last name is required.</span>
+                }
+              </div>
+
+              <div class="field span-2">
+                <label>Gender</label>
+                <select formControlName="gender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="field span-2">
+                <label>Date of birth</label>
+                <input type="date" formControlName="dateOfBirth">
+              </div>
+
+              <div class="field span-3">
+                <label>Meal preference</label>
+                <select formControlName="mealPreference">
+                  <option value="No meal">No meal</option>
+                  <option value="Veg combo">Veg combo</option>
+                  <option value="Asian meal">Asian meal</option>
+                  <option value="Protein box">Protein box</option>
+                </select>
+              </div>
+
+              <div class="field span-3">
+                <label>Frequent flyer ID</label>
+                <input type="text" formControlName="frequentFlyerId" placeholder="Optional">
+              </div>
+            </div>
+          </section>
+        }
+      </div>
+
+      <button type="submit" class="button-primary">Continue to seats</button>
+    </form>
+  </div>
+
+  <aside class="sidebar-card surface-card">
+    <p class="eyebrow">Itinerary</p>
+    <div class="summary-list">
+      @for (flight of store.selectedFlights(); track flight.id) {
+        <div class="summary-block">
+          <strong>{{ flight.origin }} - {{ flight.destination }}</strong>
+          <span>{{ flight.date }} | {{ flight.departureTime }} - {{ flight.arrivalTime }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="summary-list">
+      <div class="summary-row">
+        <span>Total so far</span>
+        <strong>{{ store.priceSummary().total | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+    </div>
+  </aside>
+</section>

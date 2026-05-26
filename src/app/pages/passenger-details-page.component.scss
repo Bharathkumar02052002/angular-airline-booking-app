@@ -1,0 +1,47 @@
+:host {
+  display: block;
+}
+
+.traveller-card,
+.summary-block {
+  padding: 1rem;
+  border-radius: 1.3rem;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.traveller-card,
+.summary-block,
+.traveller-heading {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.traveller-heading h2,
+.summary-block strong {
+  margin: 0;
+}
+
+.summary-block span {
+  color: var(--text-muted);
+}
+
+.span-4 {
+  grid-column: span 4;
+}
+
+.span-3 {
+  grid-column: span 3;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+@media (max-width: 720px) {
+  .span-4,
+  .span-3,
+  .span-2 {
+    grid-column: auto;
+  }
+}

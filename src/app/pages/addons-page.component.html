@@ -1,0 +1,90 @@
+<section class="page-grid">
+  <div class="content-card surface-card">
+    <p class="eyebrow">Add-ons</p>
+    <h1 class="section-title">Upsell the journey like a real airline</h1>
+    <p class="section-copy">
+      Add baggage, meals, priority services, flexibility, and insurance to show a full revenue-focused booking
+      flow.
+    </p>
+
+    <form [formGroup]="form" class="addon-grid" (ngSubmit)="saveAndContinue()">
+      <article class="addon-card">
+        <strong>Extra baggage</strong>
+        <p>Useful for international routes and family bookings.</p>
+        <select formControlName="baggageOption">
+          <option value="None">No extra bag</option>
+          <option value="15kg">15kg bag</option>
+          <option value="20kg">20kg bag</option>
+          <option value="25kg">25kg bag</option>
+        </select>
+      </article>
+
+      <article class="addon-card">
+        <strong>Meal bundle</strong>
+        <p>One meal preference applies for the travellers in the booking.</p>
+        <select formControlName="mealBundle">
+          <option value="None">No meal</option>
+          <option value="Comfort Meal">Comfort meal</option>
+          <option value="Regional Meal">Regional meal</option>
+          <option value="Fitness Meal">Fitness meal</option>
+        </select>
+      </article>
+
+      <label class="addon-card option-card">
+        <input type="checkbox" formControlName="loungeAccess">
+        <div>
+          <strong>Lounge access</strong>
+          <p>Premium terminal access for the primary traveller.</p>
+        </div>
+      </label>
+
+      <label class="addon-card option-card">
+        <input type="checkbox" formControlName="priorityServices">
+        <div>
+          <strong>Priority services</strong>
+          <p>Fast-track check-in, boarding, and delivery assistance.</p>
+        </div>
+      </label>
+
+      <label class="addon-card option-card">
+        <input type="checkbox" formControlName="flexiChange">
+        <div>
+          <strong>Flexi change</strong>
+          <p>Protect the itinerary with date-change flexibility.</p>
+        </div>
+      </label>
+
+      <label class="addon-card option-card">
+        <input type="checkbox" formControlName="insuranceCover">
+        <div>
+          <strong>Travel insurance</strong>
+          <p>Useful for realistic conversion messaging on payment pages.</p>
+        </div>
+      </label>
+
+      <button type="submit" class="button-primary">Continue to payment</button>
+    </form>
+  </div>
+
+  <aside class="sidebar-card surface-card">
+    <p class="eyebrow">Running total</p>
+    <div class="summary-list">
+      <div class="summary-row">
+        <span>Flights and taxes</span>
+        <strong>{{ store.priceSummary().baseFare + store.priceSummary().taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Seats</span>
+        <strong>{{ store.priceSummary().seats | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Add-ons</span>
+        <strong>{{ store.priceSummary().addons | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Total</span>
+        <strong>{{ store.priceSummary().total | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+    </div>
+  </aside>
+</section>

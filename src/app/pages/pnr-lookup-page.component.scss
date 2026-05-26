@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.lookup-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.lookup-panel,
+.helper-panel {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .lookup-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,129 @@
+<section class="page-grid">
+  <div class="content-card surface-card">
+    <p class="eyebrow">Select flights</p>
+    <h1 class="section-title">
+      @if (currentLeg(); as leg) {
+        {{ store.getAirportName(leg.origin) }} to {{ store.getAirportName(leg.destination) }}
+      } @else {
+        Itinerary ready
+      }
+    </h1>
+    <p class="section-copy">
+      Choose the best fare for each leg. The flow supports one-way, round-trip, and multi-city trips with
+      sequential flight selection.
+    </p>
+
+    <div class="progress-strip">
+      @for (leg of search().legs; track $index) {
+        <button
+          type="button"
+          class="progress-card"
+          [class.complete]="$index < selectedFlights().length"
+          [class.current]="$index === currentLegIndex()"
+          (click)="changeLeg($index)"
+        >
+          <span>Leg {{ $index + 1 }}</span>
+          <strong>{{ leg.origin }} - {{ leg.destination }}</strong>
+          <small>{{ leg.date | date: 'EEE, d MMM' }}</small>
+        </button>
+      }
+    </div>
+
+    @if (currentLeg()) {
+      <div class="results-list">
+        @for (flight of flightOptions(); track flight.id) {
+          <article class="result-card">
+            <div class="result-main">
+              <div>
+                <p>{{ flight.airline }}</p>
+                <strong>{{ flight.departureTime }}</strong>
+                <span>{{ flight.origin }}</span>
+              </div>
+
+              <div class="result-center">
+                <span>{{ flight.duration }}</span>
+                <div class="line"></div>
+                <small>{{ flight.flightNumber }} | {{ flight.aircraft }}</small>
+              </div>
+
+              <div>
+                <p>{{ flight.terminal }}</p>
+                <strong>{{ flight.arrivalTime }}</strong>
+                <span>{{ flight.destination }}</span>
+              </div>
+            </div>
+
+            <div class="result-side">
+              <div class="tag-list">
+                @for (tag of flight.tags; track tag) {
+                  <span class="tag">{{ tag }}</span>
+                }
+                <span class="tag">{{ flight.fareFamily }}</span>
+              </div>
+              <strong>{{ flight.baseFare + flight.taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+              <span>{{ flight.seatsLeft }} seats left</span>
+              <button type="button" class="button-primary" (click)="chooseFlight(flight)">Select fare</button>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="complete-state">
+        <span class="pill success">All legs selected</span>
+        <p>Continue to add traveller information and seat preferences.</p>
+        <button type="button" class="button-primary" (click)="continueIfReady()">Continue</button>
+      </div>
+    }
+  </div>
+
+  <aside class="sidebar-card surface-card">
+    <p class="eyebrow">Trip summary</p>
+    <div class="summary-list">
+      <div class="summary-row">
+        <span>Trip type</span>
+        <strong>{{ search().tripType }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Passengers</span>
+        <strong>{{ passengerSummary() }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Cabin</span>
+        <strong>{{ search().cabin }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Promo</span>
+        <strong>{{ search().promoCode || 'Not applied' }}</strong>
+      </div>
+    </div>
+
+    <div class="selected-itinerary">
+      @for (flight of selectedFlights(); track flight.id) {
+        <article class="selected-card">
+          <div>
+            <strong>{{ flight.origin }} - {{ flight.destination }}</strong>
+            <p>{{ flight.date | date: 'EEE, d MMM' }} | {{ flight.departureTime }} - {{ flight.arrivalTime }}</p>
+          </div>
+          <button type="button" class="button-ghost small" (click)="changeLeg($index)">Change</button>
+        </article>
+      }
+    </div>
+
+    <div class="summary-list">
+      <div class="summary-row">
+        <span>Base fare so far</span>
+        <strong>{{ store.priceSummary().baseFare | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Taxes</span>
+        <strong>{{ store.priceSummary().taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Total</span>
+        <strong>{{ store.priceSummary().total | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+    </div>
+
+    <a class="button-secondary" routerLink="/">Edit search</a>
+  </aside>
+</section>

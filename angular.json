@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "vehicle-service-booking": {
+    "angular-airline-booking-pnr-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -43,8 +43,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                "maximumWarning": "8kB",
+                "maximumError": "12kB"
                 }
               ],
               "outputHashing": "all"
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "vehicle-service-booking:build:production"
+              "buildTarget": "angular-airline-booking-pnr-app:build:production"
             },
             "development": {
-              "buildTarget": "vehicle-service-booking:build:development"
+              "buildTarget": "angular-airline-booking-pnr-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -94,5 +94,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "5aa5d9f2-4303-4741-a5fe-6cea9b4fa5aa"
   }
 }

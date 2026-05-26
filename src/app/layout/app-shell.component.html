@@ -1,0 +1,25 @@
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/">
+      <span class="brand-mark">SB</span>
+      <div>
+        <strong>SkyBound Air</strong>
+        <p>Airline booking and PNR demo</p>
+      </div>
+    </a>
+
+    <nav class="nav">
+      @for (item of navItems; track item.href) {
+        <a [routerLink]="item.href" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.href === '/' }">
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <a class="cta-link" routerLink="/pnr-lookup">PNR Lookup</a>
+  </header>
+
+  <main class="page-slot">
+    <router-outlet />
+  </main>
+</div>

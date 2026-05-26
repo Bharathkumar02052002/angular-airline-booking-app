@@ -1,0 +1,139 @@
+:host {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.hero,
+.booking-widget,
+.promo-panel {
+  padding: clamp(1.3rem, 3vw, 2rem);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.85fr);
+  gap: 1.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto -4rem -4rem auto;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.18), transparent 68%);
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  line-height: 0.98;
+}
+
+.hero-copy,
+.booking-widget,
+.promo-panel,
+.promo-grid,
+.deal-list,
+.lookup-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.hero-actions,
+.trip-switcher,
+.leg-header,
+.leg-actions,
+.submit-row,
+.deal-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.trip-chip {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  background: rgba(14, 116, 144, 0.06);
+}
+
+.trip-chip.active {
+  color: white;
+  background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+}
+
+.leg-card,
+.deal-card,
+.lookup-card {
+  padding: 1rem;
+  border-radius: 1.3rem;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.span-4 {
+  grid-column: span 4;
+}
+
+.span-3 {
+  grid-column: span 3;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.deal-card strong {
+  font-size: 1.08rem;
+}
+
+.deal-card p,
+.helper-copy,
+.lookup-card p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.deal-footer {
+  justify-content: space-between;
+}
+
+.deal-footer a {
+  color: var(--brand-700);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.small {
+  min-height: auto;
+  padding: 0.55rem 0.9rem;
+}
+
+@media (max-width: 980px) {
+  .hero,
+  .promo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .span-4,
+  .span-3,
+  .span-2 {
+    grid-column: auto;
+  }
+}

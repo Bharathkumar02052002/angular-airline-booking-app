@@ -1,0 +1,98 @@
+@if (booking(); as item) {
+  <section class="details-layout">
+    <article class="surface-card details-panel">
+      <div class="header-row">
+        <div>
+          <p class="eyebrow">Booking overview</p>
+          <h1 class="section-title">{{ item.pnr }} | {{ item.primaryLastName }}</h1>
+        </div>
+        <span
+          class="pill"
+          [class.success]="item.status === 'Confirmed'"
+          [class.warning]="item.status === 'Pending Payment'"
+          [class.danger]="item.status === 'Payment Failed'"
+        >
+          {{ item.status }}
+        </span>
+      </div>
+
+      <div class="details-grid">
+        <section class="surface-card detail-card">
+          <h2>Flights</h2>
+          @for (flight of item.itinerary; track flight.id) {
+            <div class="detail-row">
+              <strong>{{ flight.originLabel }} to {{ flight.destinationLabel }}</strong>
+              <span>{{ flight.date | date: 'EEE, d MMM y' }}</span>
+              <span>{{ flight.departureTime }} - {{ flight.arrivalTime }} | {{ flight.flightNumber }}</span>
+            </div>
+          }
+        </section>
+
+        <section class="surface-card detail-card">
+          <h2>Passengers</h2>
+          @for (passenger of item.passengers; track passenger.firstName + passenger.lastName) {
+            <div class="detail-row">
+              <strong>{{ passenger.title }} {{ passenger.firstName }} {{ passenger.lastName }}</strong>
+              <span>{{ passenger.passengerType }} | {{ passenger.gender }}</span>
+              <span>Meal: {{ passenger.mealPreference }}</span>
+            </div>
+          }
+        </section>
+
+        <section class="surface-card detail-card">
+          <h2>Seats and add-ons</h2>
+          @for (seat of item.seats; track seat.seatNumber) {
+            <div class="detail-row">
+              <strong>{{ seat.passengerName }}</strong>
+              <span>{{ seat.seatNumber }} | {{ seat.zone }}</span>
+              <span>{{ seat.price | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+            </div>
+          }
+          <div class="detail-row">
+            <strong>Baggage</strong>
+            <span>{{ item.addons.baggageOption }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Meal bundle</strong>
+            <span>{{ item.addons.mealBundle }}</span>
+          </div>
+        </section>
+
+        <section class="surface-card detail-card">
+          <h2>Fare summary</h2>
+          <div class="summary-row">
+            <span>Base fare</span>
+            <strong>{{ item.baseFareTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Taxes</span>
+            <strong>{{ item.taxTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Seats</span>
+            <strong>{{ item.seatsTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Add-ons</span>
+            <strong>{{ item.addonsTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Total</span>
+            <strong>{{ item.grandTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+        </section>
+      </div>
+
+      <div class="action-row">
+        <a class="button-primary" routerLink="/">Book another trip</a>
+        <a class="button-secondary" routerLink="/pnr-lookup">Look up another PNR</a>
+      </div>
+    </article>
+  </section>
+} @else {
+  <section class="surface-card details-panel">
+    <p class="eyebrow">Manage booking</p>
+    <h1 class="section-title">No booking found for this PNR</h1>
+    <a class="button-primary" routerLink="/pnr-lookup">Return to lookup</a>
+  </section>
+}

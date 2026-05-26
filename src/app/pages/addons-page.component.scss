@@ -1,0 +1,37 @@
+:host {
+  display: block;
+}
+
+.addon-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.addon-card {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem;
+  border-radius: 1.2rem;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.addon-card p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.addon-card select {
+  border: 1px solid var(--border-soft);
+  border-radius: 1rem;
+  padding: 0.85rem 0.95rem;
+}
+
+.option-card {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+}
+
+.option-card input {
+  margin-top: 0.2rem;
+}

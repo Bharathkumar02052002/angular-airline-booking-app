@@ -1,0 +1,77 @@
+<section class="page-grid">
+  <div class="content-card surface-card">
+    <p class="eyebrow">Seat selection</p>
+    <h1 class="section-title">Choose seats for your travellers</h1>
+    <p class="section-copy">
+      Seat pricing is mapped by zone so the interaction feels realistic. The selected preference is applied
+      to the journey as a demo-friendly simplification.
+    </p>
+
+    <div class="passenger-strip">
+      @for (passenger of passengers(); track $index) {
+        <button
+          type="button"
+          class="passenger-card"
+          [class.active]="activePassengerIndex === $index"
+          (click)="selectPassenger($index)"
+        >
+          <strong>{{ passenger.firstName }} {{ passenger.lastName }}</strong>
+          <span>{{ seatSelectionForPassenger($index)?.seatNumber || 'Choose seat' }}</span>
+        </button>
+      }
+    </div>
+
+    <div class="legend">
+      <span class="tag">Standard - INR 450</span>
+      <span class="tag">Preferred - INR 900</span>
+      <span class="tag">XL - INR 1800</span>
+      <span class="tag">Blocked seat</span>
+    </div>
+
+    <div class="seat-map">
+      @for (row of rows; track row) {
+        <div class="seat-row">
+          <span class="row-label">{{ row }}</span>
+          @for (letter of seatLetters; track letter) {
+            <button
+              type="button"
+              class="seat"
+              [class.reserved]="isReserved(row + letter)"
+              [class.selected]="isSelected(row + letter)"
+              [class.xl]="seatZone(row) === 'XL'"
+              [class.preferred]="seatZone(row) === 'Preferred'"
+              (click)="chooseSeat(row, letter)"
+            >
+              {{ row }}{{ letter }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <button
+      type="button"
+      class="button-primary"
+      [disabled]="selectedSeats().length !== passengers().length"
+      (click)="continue()"
+    >
+      Continue to add-ons
+    </button>
+  </div>
+
+  <aside class="sidebar-card surface-card">
+    <p class="eyebrow">Selected seats</p>
+    <div class="summary-list">
+      @for (seat of selectedSeats(); track seat.passengerIndex) {
+        <div class="summary-row">
+          <span>{{ seat.passengerName }} - {{ seat.zone }}</span>
+          <strong>{{ seat.seatNumber }} | {{ seat.price | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+        </div>
+      }
+    </div>
+    <div class="summary-row">
+      <span>Seat total</span>
+      <strong>{{ store.priceSummary().seats | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+    </div>
+  </aside>
+</section>

@@ -1,0 +1,77 @@
+<section class="page-grid">
+  <div class="content-card surface-card">
+    <p class="eyebrow">Payment</p>
+    <h1 class="section-title">Simulate a production checkout</h1>
+    <p class="section-copy">
+      This is a safe fake gateway for demos. You can switch between success, pending, and failed payment
+      outcomes to showcase different booking states.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="payNow()" class="field-grid">
+      <div class="form-grid">
+        <div class="field span-4">
+          <label>Payment mode</label>
+          <select formControlName="paymentMode">
+            <option value="UPI">UPI</option>
+            <option value="Card">Card</option>
+            <option value="Net Banking">Net banking</option>
+          </select>
+        </div>
+
+        <div class="field span-4">
+          <label>Simulation status</label>
+          <select formControlName="paymentStatus">
+            <option value="Success">Success</option>
+            <option value="Pending">Pending</option>
+            <option value="Failed">Failed</option>
+          </select>
+        </div>
+
+        <div class="field span-4">
+          <label>Payer name</label>
+          <input type="text" formControlName="payerName" placeholder="Card holder or traveller name">
+        </div>
+
+        <div class="field span-4">
+          <label>Billing email</label>
+          <input type="email" formControlName="billingEmail" placeholder="billing@example.com">
+        </div>
+      </div>
+
+      <label class="consent">
+        <input type="checkbox" formControlName="acceptTerms">
+        <span>I understand this portfolio app uses a simulated payment experience.</span>
+      </label>
+
+      <button type="submit" class="button-primary" [disabled]="processing">
+        {{ processing ? 'Processing...' : 'Pay and confirm booking' }}
+      </button>
+    </form>
+  </div>
+
+  <aside class="sidebar-card surface-card">
+    <p class="eyebrow">Fare summary</p>
+    <div class="summary-list">
+      <div class="summary-row">
+        <span>Base fare</span>
+        <strong>{{ store.priceSummary().baseFare | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Taxes</span>
+        <strong>{{ store.priceSummary().taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Seats</span>
+        <strong>{{ store.priceSummary().seats | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Add-ons</span>
+        <strong>{{ store.priceSummary().addons | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Total payable</span>
+        <strong>{{ store.priceSummary().total | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+    </div>
+  </aside>
+</section>

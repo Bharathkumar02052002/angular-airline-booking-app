@@ -1,0 +1,85 @@
+:host {
+  display: block;
+}
+
+.passenger-strip,
+.legend,
+.seat-map,
+.seat-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.passenger-card,
+.seat {
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.passenger-card {
+  padding: 0.95rem 1rem;
+  border-radius: 1rem;
+  text-align: left;
+}
+
+.passenger-card.active {
+  border-color: rgba(14, 116, 144, 0.42);
+  background: rgba(236, 254, 255, 0.82);
+}
+
+.passenger-card strong,
+.passenger-card span {
+  display: block;
+}
+
+.passenger-card span,
+.row-label {
+  color: var(--text-muted);
+}
+
+.seat-map {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.seat-row {
+  align-items: center;
+}
+
+.row-label {
+  width: 2rem;
+  font-weight: 800;
+}
+
+.seat {
+  width: 3.35rem;
+  height: 3rem;
+  border-radius: 0.9rem;
+  font-weight: 800;
+}
+
+.seat.preferred {
+  background: rgba(254, 240, 138, 0.3);
+}
+
+.seat.xl {
+  background: rgba(191, 219, 254, 0.38);
+}
+
+.seat.reserved {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.seat.selected {
+  color: white;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+}
+
+@media (max-width: 720px) {
+  .seat {
+    width: 2.75rem;
+  }
+}

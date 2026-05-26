@@ -1,5 +1,5 @@
 {
-  "name": "vehicle-service-booking",
+  "name": "angular-airline-booking-pnr-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -28,6 +28,7 @@
     "@angular/forms": "^20.2.0",
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
+    "@babel/core": "^7.29.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

@@ -1,0 +1,73 @@
+@if (booking(); as item) {
+  <section class="confirmation surface-card">
+    <div class="status-header">
+      <div>
+        <p class="eyebrow">Booking confirmation</p>
+        <h1 class="section-title">Your PNR is {{ item.pnr }}</h1>
+        <p class="section-copy">
+          Payment status: {{ item.paymentStatus }}. This record is stored locally so the PNR lookup flow works
+          after the booking is created.
+        </p>
+      </div>
+
+      <span
+        class="pill"
+        [class.success]="item.status === 'Confirmed'"
+        [class.warning]="item.status === 'Pending Payment'"
+        [class.danger]="item.status === 'Payment Failed'"
+      >
+        {{ item.status }}
+      </span>
+    </div>
+
+    <div class="confirmation-grid">
+      <div class="surface-card summary-panel">
+        <h2>Itinerary</h2>
+        @for (flight of item.itinerary; track flight.id) {
+          <div class="segment">
+            <strong>{{ flight.origin }} - {{ flight.destination }}</strong>
+            <span>{{ flight.date | date: 'EEE, d MMM y' }}</span>
+            <span>{{ flight.departureTime }} - {{ flight.arrivalTime }} | {{ flight.flightNumber }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="surface-card summary-panel">
+        <h2>Fare summary</h2>
+        <div class="summary-list">
+          <div class="summary-row">
+            <span>Base fare</span>
+            <strong>{{ item.baseFareTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Taxes</span>
+            <strong>{{ item.taxTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Seats</span>
+            <strong>{{ item.seatsTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Add-ons</span>
+            <strong>{{ item.addonsTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Total</span>
+            <strong>{{ item.grandTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <a class="button-primary" [routerLink]="['/my-trips', item.pnr]">Open manage booking</a>
+      <a class="button-secondary" routerLink="/">Book another trip</a>
+    </div>
+  </section>
+} @else {
+  <section class="surface-card empty-state">
+    <p class="eyebrow">Booking confirmation</p>
+    <h1 class="section-title">No booking found</h1>
+    <a class="button-primary" routerLink="/">Return home</a>
+  </section>
+}

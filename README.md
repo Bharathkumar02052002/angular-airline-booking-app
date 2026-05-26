@@ -1,59 +1,50 @@
-# VehicleServiceBooking
+# SkyBound Air
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.2.
+A realistic airline booking and PNR demo app built in Angular for portfolio and recruiter walkthroughs.
 
-## Development server
+## What it demonstrates
 
-To start a local development server, run:
+- one-way, round-trip, and multi-city search flows
+- fare selection with realistic mock flight inventory
+- traveller details with reactive form validation
+- seat selection with zone-based pricing
+- add-ons such as baggage, meals, lounge, flexi change, and insurance
+- fake payment flow with success, pending, and failed outcomes
+- booking confirmation with generated PNR
+- manage-booking flow with PNR and last-name lookup
+- local persistence so created bookings can be retrieved after refresh
 
-```bash
-ng serve
-```
+## Tech stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Angular 20
+- TypeScript
+- SCSS
+- Angular Router
+- Reactive Forms
+- Signals for local booking state
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Run locally
 
 ```bash
-ng build
+npm install
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Open [http://localhost:4200](http://localhost:4200).
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Build
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+## Demo credentials
 
-For end-to-end (e2e) testing, run:
+- Sample PNR: `SB6Q2P`
+- Last name: `Raman`
 
-```bash
-ng e2e
-```
+## Suggested publish flow
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Push this folder to a new GitHub repo named `angular-airline-booking-pnr-app`.
+2. Deploy the built `dist/angular-airline-booking-pnr-app` output to Firebase Hosting, Netlify, or Vercel.
+3. Add screenshots of the homepage, flight selection, seat map, payment page, and PNR lookup to the repo README.
