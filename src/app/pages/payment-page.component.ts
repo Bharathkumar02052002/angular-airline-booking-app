@@ -26,7 +26,7 @@ export class PaymentPageComponent {
   });
 
   constructor() {
-    if (!this.store.draft().addons) {
+    if (!this.store.draft().seats.length || !this.store.selectedPassengers().length) {
       void this.router.navigate(['/addons']);
     }
   }

@@ -1,5 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { AIRPORTS, EXPERIENCE_HIGHLIGHTS, FEATURED_DEALS } from './airport-data';
+import { AIRPORTS } from './airport-data';
+import { createDefaultAddons, createDefaultSearch, createEmptyDraft } from './booking-defaults';
 import {
   AddonSelection,
   AirlineBooking,
@@ -15,6 +16,7 @@ import {
 } from './booking.models';
 import { MOCK_FLIGHTS } from './mock-flights';
 import { MOCK_BOOKINGS } from './mock-bookings';
+import { buildPriceSummary } from './booking-pricing';
 
 @Injectable({ providedIn: 'root' })
 export class BookingStore {
@@ -22,8 +24,6 @@ export class BookingStore {
   private readonly bookingStorageKey = 'skybound-air-bookings-v1';
 
   readonly airports = AIRPORTS;
-  readonly featuredDeals = FEATURED_DEALS;
-  readonly experienceHighlights = EXPERIENCE_HIGHLIGHTS;
   readonly flights = MOCK_FLIGHTS;
 
   private readonly bookingState = signal<AirlineBooking[]>(this.loadBookings());
@@ -37,13 +37,7 @@ export class BookingStore {
   readonly itineraryComplete = computed(
     () => this.draftState().selectedFlights.length === this.draftState().search.legs.length
   );
-  readonly priceSummary = computed(() => this.buildPriceSummary(this.draftState()));
-  readonly bookingMetrics = computed(() => [
-    { label: 'Routes loaded', value: `${this.airports.length} airports` },
-    { label: 'Workflow steps', value: `${this.draftState().search.legs.length + 5} pages` },
-    { label: 'Saved PNRs', value: `${this.bookingState().length}` },
-    { label: 'Flight records', value: `${this.flights.length}` }
-  ]);
+  readonly priceSummary = computed(() => buildPriceSummary(this.draftState()));
 
   setSearch(search: FlightSearch): void {
     this.draftState.set({
@@ -52,7 +46,7 @@ export class BookingStore {
       passengers: [],
       contact: null,
       seats: [],
-      addons: this.defaultAddons(),
+      addons: createDefaultAddons(),
       paymentMode: null,
       paymentStatus: null
     });
@@ -180,14 +174,7 @@ export class BookingStore {
     this.persistBookings();
 
     this.draftState.set({
-      search: this.createDefaultSearch(),
-      selectedFlights: [],
-      passengers: [],
-      contact: null,
-      seats: [],
-      addons: this.defaultAddons(),
-      paymentMode: null,
-      paymentStatus: null
+      ...createEmptyDraft(this.defaultDate())
     });
     this.persistDraft();
 
@@ -286,16 +273,7 @@ export class BookingStore {
   }
 
   private loadDraft(): BookingDraft {
-    return this.readStorage<BookingDraft>(this.draftStorageKey) ?? {
-      search: this.createDefaultSearch(),
-      selectedFlights: [],
-      passengers: [],
-      contact: null,
-      seats: [],
-      addons: this.defaultAddons(),
-      paymentMode: null,
-      paymentStatus: null
-    };
+    return this.readStorage<BookingDraft>(this.draftStorageKey) ?? createEmptyDraft(this.defaultDate());
   }
 
   private persistBookings(): void {
@@ -323,34 +301,12 @@ export class BookingStore {
     }
   }
 
-  private createDefaultSearch(): FlightSearch {
-    const departureDate = this.flights[0]?.date ?? new Date().toISOString().slice(0, 10);
-    return {
-      tripType: 'one-way',
-      cabin: 'Economy',
-      passengers: {
-        adults: 1,
-        children: 0,
-        infants: 0
-      },
-      promoCode: '',
-      legs: [{ origin: 'DEL', destination: 'BOM', date: departureDate }]
-    };
-  }
-
-  private defaultAddons(): AddonSelection {
-    return {
-      baggageOption: 'None',
-      mealBundle: 'None',
-      loungeAccess: false,
-      priorityServices: false,
-      flexiChange: false,
-      insuranceCover: false
-    };
-  }
-
   private generatePnr(): string {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  }
+
+  private defaultDate(): string {
+    return this.flights[0]?.date ?? new Date().toISOString().slice(0, 10);
   }
 }

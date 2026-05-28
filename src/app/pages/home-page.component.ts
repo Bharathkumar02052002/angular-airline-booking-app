@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { FEATURED_DEALS } from '../core/airport-data';
 import { BookingStore } from '../core/booking.store';
 import { CabinClass, FlightSearch, SearchLeg, TripType } from '../core/booking.models';
 
@@ -22,6 +23,13 @@ export class HomePageComponent {
     { value: 'multi-city', label: 'Multi-city' }
   ];
   protected readonly cabinClasses: CabinClass[] = ['Economy', 'Premium Economy', 'Business'];
+  protected readonly highlights = [
+    'One-way, round-trip, and multi-city search',
+    'Seat map with zone-based pricing',
+    'Add-ons and payment state handling',
+    'PNR lookup with saved bookings'
+  ];
+  protected readonly featuredDeals = FEATURED_DEALS;
   protected routeError = '';
 
   protected readonly form = this.formBuilder.group({
@@ -41,6 +49,15 @@ export class HomePageComponent {
 
   protected get legControls(): FormArray {
     return this.form.get('legs') as FormArray;
+  }
+
+  protected get stats(): Array<{ label: string; value: string }> {
+    return [
+      { label: 'Airports', value: `${this.store.airports.length}` },
+      { label: 'Flight rows', value: `${this.store.flights.length}` },
+      { label: 'Saved bookings', value: `${this.store.bookings().length}` },
+      { label: 'Flow steps', value: '7' }
+    ];
   }
 
   protected setTripType(type: TripType): void {

@@ -3,8 +3,7 @@
     <p class="eyebrow">Manage booking</p>
     <h1 class="section-title">Find your trip by PNR</h1>
     <p class="section-copy">
-      This screen closes the loop on the airline workflow by letting recruiters test confirmation retrieval
-      and booking review.
+      Enter a PNR and the passenger's last name to open the booking summary.
     </p>
 
     <form [formGroup]="form" (ngSubmit)="lookup()" class="field-grid">
@@ -23,9 +22,9 @@
   </article>
 
   <article class="surface-card helper-panel">
-    <p class="eyebrow">Demo tip</p>
-    <h2 class="section-title">Try the seeded sample</h2>
-    <p class="section-copy">Use `SB6Q2P` with the last name `Raman`, or create a new booking through the full funnel.</p>
+    <p class="eyebrow">Sample data</p>
+    <h2 class="section-title">Use the seeded booking</h2>
+    <p class="section-copy">PNR: SB6Q2P | Last name: Raman. You can also create a new booking from the home page.</p>
     <a class="button-secondary" routerLink="/">Create a new booking</a>
   </article>
 </section>

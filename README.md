@@ -1,11 +1,11 @@
 # SkyBound Air
 
-A realistic airline booking and PNR demo app built in Angular for portfolio and recruiter walkthroughs.
+Angular airline booking demo with a complete booking flow and PNR lookup.
 
-## What it demonstrates
+## Features
 
 - one-way, round-trip, and multi-city search flows
-- fare selection with realistic mock flight inventory
+- flight selection using local mock inventory
 - traveller details with reactive form validation
 - seat selection with zone-based pricing
 - add-ons such as baggage, meals, lounge, flexi change, and insurance
@@ -43,8 +43,7 @@ npm run build
 - Sample PNR: `SB6Q2P`
 - Last name: `Raman`
 
-## Suggested publish flow
+## Notes
 
-1. Push this folder to a new GitHub repo named `angular-airline-booking-pnr-app`.
-2. Deploy the built `dist/angular-airline-booking-pnr-app` output to Firebase Hosting, Netlify, or Vercel.
-3. Add screenshots of the homepage, flight selection, seat map, payment page, and PNR lookup to the repo README.
+- The app currently uses browser storage, not Firebase, so bookings persist per browser.
+- For deployment, publish `dist/angular-airline-booking-pnr-app` to Firebase Hosting, Netlify, or Vercel.
