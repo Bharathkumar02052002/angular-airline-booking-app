@@ -140,10 +140,35 @@
 
     <div class="submit-row">
       <button type="submit" class="button-primary">Search flights</button>
-      <p class="helper-copy">Best for demo publishing: realistic UX, simulated pricing, local booking persistence.</p>
+      <p class="helper-copy">Searches and bookings are saved in browser storage for demo purposes.</p>
     </div>
   </form>
 </section>
+
+@if (store.recentSearches().length) {
+  <section class="surface-card recent-searches">
+    <div>
+      <p class="eyebrow">Recent searches</p>
+      <h2 class="section-title">Reuse a previous search</h2>
+    </div>
+
+    <div class="recent-grid">
+      @for (search of store.recentSearches(); track recentSearchLabel(search)) {
+        <article class="recent-card">
+          <strong>{{ recentSearchLabel(search) }}</strong>
+          <span>{{ recentSearchDates(search) }}</span>
+          <span>
+            {{ search.passengers.adults }} adult{{ search.passengers.adults > 1 ? 's' : '' }}
+            @if (search.passengers.children) {
+              , {{ search.passengers.children }} child
+            }
+          </span>
+          <button type="button" class="button-ghost small" (click)="applyRecentSearch(search)">Use this search</button>
+        </article>
+      }
+    </div>
+  </section>
+}
 
 <section class="promo-grid">
   <article class="promo-panel surface-card">

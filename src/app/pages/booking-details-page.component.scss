@@ -4,7 +4,8 @@
 
 .details-panel,
 .detail-card,
-.detail-row {
+.detail-row,
+.recent-links {
   display: grid;
   gap: 1rem;
 }
@@ -42,8 +43,31 @@
   color: var(--text-muted);
 }
 
+.recent-links {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.recent-link {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-decoration: none;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--text-strong);
+}
+
+.recent-link span {
+  color: var(--text-muted);
+}
+
 @media (max-width: 900px) {
   .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recent-links {
     grid-template-columns: 1fr;
   }
 }

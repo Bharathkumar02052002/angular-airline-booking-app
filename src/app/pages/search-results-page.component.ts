@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { BookingStore } from '../core/booking.store';
 import { FlightOption, SearchLeg } from '../core/booking.models';
@@ -12,6 +12,9 @@ import { FlightOption, SearchLeg } from '../core/booking.models';
 })
 export class SearchResultsPageComponent {
   private readonly router = inject(Router);
+  private readonly selectedSort = signal<'price' | 'departure' | 'duration'>('price');
+  private readonly selectedFare = signal<'all' | FlightOption['fareFamily']>('all');
+  private readonly minimumSeats = signal<0 | 5 | 10>(0);
   protected readonly store = inject(BookingStore);
 
   protected readonly search = this.store.activeSearch;
@@ -23,6 +26,29 @@ export class SearchResultsPageComponent {
   protected readonly flightOptions = computed(() => {
     const leg = this.currentLeg();
     return leg ? this.store.getFlightsForLeg(leg.origin, leg.destination, leg.date) : [];
+  });
+  protected readonly visibleFlights = computed(() => {
+    const fare = this.selectedFare();
+    const minSeats = this.minimumSeats();
+    const flights = this.flightOptions().filter((flight) => {
+      if (fare !== 'all' && flight.fareFamily !== fare) {
+        return false;
+      }
+
+      return flight.seatsLeft >= minSeats;
+    });
+
+    return [...flights].sort((left, right) => {
+      switch (this.selectedSort()) {
+        case 'departure':
+          return left.departureTime.localeCompare(right.departureTime);
+        case 'duration':
+          return this.durationToMinutes(left.duration) - this.durationToMinutes(right.duration);
+        case 'price':
+        default:
+          return left.baseFare + left.taxes - (right.baseFare + right.taxes);
+      }
+    });
   });
 
   constructor() {
@@ -50,8 +76,40 @@ export class SearchResultsPageComponent {
     }
   }
 
+  protected setSort(value: 'price' | 'departure' | 'duration'): void {
+    this.selectedSort.set(value);
+  }
+
+  protected setFareFilter(value: 'all' | FlightOption['fareFamily']): void {
+    this.selectedFare.set(value);
+  }
+
+  protected setMinimumSeats(value: 0 | 5 | 10): void {
+    this.minimumSeats.set(value);
+  }
+
   protected passengerSummary(): string {
     const passengers = this.search().passengers;
     return `${passengers.adults} Adult${passengers.adults > 1 ? 's' : ''}, ${passengers.children} Child, ${passengers.infants} Infant`;
+  }
+
+  protected currentSort(): 'price' | 'departure' | 'duration' {
+    return this.selectedSort();
+  }
+
+  protected currentFareFilter(): 'all' | FlightOption['fareFamily'] {
+    return this.selectedFare();
+  }
+
+  protected currentMinSeats(): 0 | 5 | 10 {
+    return this.minimumSeats();
+  }
+
+  private durationToMinutes(duration: string): number {
+    const [hoursPart, minutesPart] = duration.split(' ');
+    const hours = Number.parseInt(hoursPart.replace('h', ''), 10);
+    const minutes = Number.parseInt(minutesPart.replace('m', ''), 10);
+
+    return hours * 60 + minutes;
   }
 }

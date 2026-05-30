@@ -81,7 +81,43 @@
             <strong>{{ item.grandTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
           </div>
         </section>
+
+        <section class="surface-card detail-card">
+          <h2>Contact and payment</h2>
+          <div class="detail-row">
+            <strong>Email</strong>
+            <span>{{ item.contact.email }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Phone</strong>
+            <span>{{ item.contact.phone }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Payment mode</strong>
+            <span>{{ item.paymentMode }} | {{ item.paymentStatus }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Booked on</strong>
+            <span>{{ item.bookedAt | date: 'EEE, d MMM y, h:mm a' }}</span>
+          </div>
+        </section>
       </div>
+
+      @if (recentBookings.length > 1) {
+        <section class="surface-card detail-card">
+          <h2>Other recent bookings</h2>
+          <div class="recent-links">
+            @for (booking of recentBookings; track booking.pnr) {
+              @if (booking.pnr !== item.pnr) {
+                <a class="recent-link" [routerLink]="['/my-trips', booking.pnr]">
+                  <strong>{{ booking.pnr }}</strong>
+                  <span>{{ booking.primaryLastName }}</span>
+                </a>
+              }
+            }
+          </div>
+        </section>
+      }
 
       <div class="action-row">
         <a class="button-primary" routerLink="/">Book another trip</a>

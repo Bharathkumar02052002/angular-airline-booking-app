@@ -30,41 +30,72 @@
     </div>
 
     @if (currentLeg()) {
+      <div class="filter-bar">
+        <div class="filter-group">
+          <span>Sort</span>
+          <button type="button" class="filter-chip" [class.active]="currentSort() === 'price'" (click)="setSort('price')">Lowest fare</button>
+          <button type="button" class="filter-chip" [class.active]="currentSort() === 'departure'" (click)="setSort('departure')">Earliest</button>
+          <button type="button" class="filter-chip" [class.active]="currentSort() === 'duration'" (click)="setSort('duration')">Shortest</button>
+        </div>
+
+        <div class="filter-group">
+          <span>Fare</span>
+          <button type="button" class="filter-chip" [class.active]="currentFareFilter() === 'all'" (click)="setFareFilter('all')">All</button>
+          <button type="button" class="filter-chip" [class.active]="currentFareFilter() === 'Saver'" (click)="setFareFilter('Saver')">Saver</button>
+          <button type="button" class="filter-chip" [class.active]="currentFareFilter() === 'Flex'" (click)="setFareFilter('Flex')">Flex</button>
+          <button type="button" class="filter-chip" [class.active]="currentFareFilter() === 'Smart Plus'" (click)="setFareFilter('Smart Plus')">Smart Plus</button>
+        </div>
+
+        <div class="filter-group">
+          <span>Seats</span>
+          <button type="button" class="filter-chip" [class.active]="currentMinSeats() === 0" (click)="setMinimumSeats(0)">Any</button>
+          <button type="button" class="filter-chip" [class.active]="currentMinSeats() === 5" (click)="setMinimumSeats(5)">5+</button>
+          <button type="button" class="filter-chip" [class.active]="currentMinSeats() === 10" (click)="setMinimumSeats(10)">10+</button>
+        </div>
+      </div>
+
       <div class="results-list">
-        @for (flight of flightOptions(); track flight.id) {
-          <article class="result-card">
-            <div class="result-main">
-              <div>
-                <p>{{ flight.airline }}</p>
-                <strong>{{ flight.departureTime }}</strong>
-                <span>{{ flight.origin }}</span>
+        @if (visibleFlights().length) {
+          @for (flight of visibleFlights(); track flight.id) {
+            <article class="result-card">
+              <div class="result-main">
+                <div>
+                  <p>{{ flight.airline }}</p>
+                  <strong>{{ flight.departureTime }}</strong>
+                  <span>{{ flight.origin }}</span>
+                </div>
+
+                <div class="result-center">
+                  <span>{{ flight.duration }}</span>
+                  <div class="line"></div>
+                  <small>{{ flight.flightNumber }} | {{ flight.aircraft }}</small>
+                </div>
+
+                <div>
+                  <p>{{ flight.terminal }}</p>
+                  <strong>{{ flight.arrivalTime }}</strong>
+                  <span>{{ flight.destination }}</span>
+                </div>
               </div>
 
-              <div class="result-center">
-                <span>{{ flight.duration }}</span>
-                <div class="line"></div>
-                <small>{{ flight.flightNumber }} | {{ flight.aircraft }}</small>
+              <div class="result-side">
+                <div class="tag-list">
+                  @for (tag of flight.tags; track tag) {
+                    <span class="tag">{{ tag }}</span>
+                  }
+                  <span class="tag">{{ flight.fareFamily }}</span>
+                </div>
+                <strong>{{ flight.baseFare + flight.taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+                <span>{{ flight.seatsLeft }} seats left</span>
+                <button type="button" class="button-primary" (click)="chooseFlight(flight)">Select fare</button>
               </div>
-
-              <div>
-                <p>{{ flight.terminal }}</p>
-                <strong>{{ flight.arrivalTime }}</strong>
-                <span>{{ flight.destination }}</span>
-              </div>
-            </div>
-
-            <div class="result-side">
-              <div class="tag-list">
-                @for (tag of flight.tags; track tag) {
-                  <span class="tag">{{ tag }}</span>
-                }
-                <span class="tag">{{ flight.fareFamily }}</span>
-              </div>
-              <strong>{{ flight.baseFare + flight.taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
-              <span>{{ flight.seatsLeft }} seats left</span>
-              <button type="button" class="button-primary" (click)="chooseFlight(flight)">Select fare</button>
-            </div>
-          </article>
+            </article>
+          }
+        } @else {
+          <div class="empty-results">
+            <strong>No flights match the current filters.</strong>
+            <span>Try another fare family or lower the minimum seats filter.</span>
+          </div>
         }
       </div>
     } @else {

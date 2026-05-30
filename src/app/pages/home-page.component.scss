@@ -39,7 +39,9 @@
 .promo-panel,
 .promo-grid,
 .deal-list,
-.lookup-card {
+.lookup-card,
+.recent-searches,
+.recent-grid {
   display: grid;
   gap: 1rem;
 }
@@ -72,11 +74,29 @@
 
 .leg-card,
 .deal-card,
-.lookup-card {
+.lookup-card,
+.recent-card {
   padding: 1rem;
   border-radius: 1.3rem;
   border: 1px solid var(--border-soft);
   background: rgba(255, 255, 255, 0.78);
+}
+
+.recent-searches {
+  padding: clamp(1.3rem, 3vw, 2rem);
+}
+
+.recent-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.recent-card strong,
+.recent-card span {
+  display: block;
+}
+
+.recent-card span {
+  color: var(--text-muted);
 }
 
 .span-4 {
@@ -125,7 +145,8 @@
 
 @media (max-width: 980px) {
   .hero,
-  .promo-grid {
+  .promo-grid,
+  .recent-grid {
     grid-template-columns: 1fr;
   }
 }

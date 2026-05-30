@@ -20,4 +20,5 @@ export class BookingDetailsPageComponent {
   });
 
   protected readonly booking = computed(() => this.store.getBookingByPnr(this.pnr()));
+  protected readonly recentBookings = this.store.getRecentBookings(3);
 }

@@ -14,8 +14,8 @@ export class PnrLookupPageComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly router = inject(Router);
   protected readonly store = inject(BookingStore);
-  protected searched = false;
-  protected booking = this.store.getBookingByPnr('SB6Q2P');
+  protected lookupError = '';
+  protected readonly recentBookings = this.store.getRecentBookings(4);
 
   protected readonly form = this.formBuilder.group({
     pnr: ['SB6Q2P', [Validators.required, Validators.minLength(6)]],
@@ -23,7 +23,7 @@ export class PnrLookupPageComponent {
   });
 
   protected lookup(): void {
-    this.searched = true;
+    this.lookupError = '';
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -34,10 +34,15 @@ export class PnrLookupPageComponent {
     const lastName = this.form.get('lastName')?.value ?? '';
     const booking = this.store.findBookingByPnrAndLastName(pnr, lastName);
 
-    this.booking = booking;
-
     if (booking) {
       void this.router.navigate(['/my-trips', booking.pnr]);
+      return;
     }
+
+    this.lookupError = 'No booking matched that PNR and last name.';
+  }
+
+  protected openRecentBooking(pnr: string): void {
+    void this.router.navigate(['/my-trips', pnr]);
   }
 }

@@ -18,6 +18,10 @@
       </div>
 
       <button type="submit" class="button-primary">Find booking</button>
+
+      @if (lookupError) {
+        <p class="field-error">{{ lookupError }}</p>
+      }
     </form>
   </article>
 
@@ -28,3 +32,23 @@
     <a class="button-secondary" routerLink="/">Create a new booking</a>
   </article>
 </section>
+
+@if (recentBookings.length) {
+  <section class="surface-card recent-bookings">
+    <div>
+      <p class="eyebrow">Recent bookings</p>
+      <h2 class="section-title">Open a saved booking</h2>
+    </div>
+
+    <div class="recent-booking-grid">
+      @for (booking of recentBookings; track booking.pnr) {
+        <article class="recent-booking-card">
+          <strong>{{ booking.pnr }}</strong>
+          <span>{{ booking.primaryLastName }}</span>
+          <span>{{ booking.itinerary[0]?.origin }} - {{ booking.itinerary[booking.itinerary.length - 1]?.destination }}</span>
+          <button type="button" class="button-ghost small" (click)="openRecentBooking(booking.pnr)">Open booking</button>
+        </article>
+      }
+    </div>
+  </section>
+}

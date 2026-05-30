@@ -9,14 +9,38 @@
 }
 
 .lookup-panel,
-.helper-panel {
+.helper-panel,
+.recent-bookings,
+.recent-booking-grid {
   padding: 1.5rem;
   display: grid;
   gap: 1rem;
 }
 
+.recent-booking-grid {
+  padding: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.recent-booking-card {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.recent-booking-card span {
+  color: var(--text-muted);
+}
+
 @media (max-width: 900px) {
   .lookup-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .recent-booking-grid {
     grid-template-columns: 1fr;
   }
 }

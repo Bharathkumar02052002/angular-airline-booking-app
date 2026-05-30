@@ -60,6 +60,23 @@ export class HomePageComponent {
     ];
   }
 
+  protected applyRecentSearch(search: FlightSearch): void {
+    this.routeError = '';
+    this.applySearchToForm(search);
+  }
+
+  protected recentSearchLabel(search: FlightSearch): string {
+    const firstLeg = search.legs[0];
+    const lastLeg = search.legs[search.legs.length - 1];
+    const route = `${firstLeg.origin} - ${lastLeg.destination}`;
+
+    return `${route} | ${search.tripType} | ${search.cabin}`;
+  }
+
+  protected recentSearchDates(search: FlightSearch): string {
+    return search.legs.map((leg) => leg.date).join(' / ');
+  }
+
   protected setTripType(type: TripType): void {
     this.form.patchValue({ tripType: type });
 

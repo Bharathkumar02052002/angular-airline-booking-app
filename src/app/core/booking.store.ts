@@ -1,6 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { AIRPORTS } from './airport-data';
-import { createDefaultAddons, createDefaultSearch, createEmptyDraft } from './booking-defaults';
+import { createDefaultAddons, createEmptyDraft } from './booking-defaults';
 import {
   AddonSelection,
   AirlineBooking,
@@ -22,15 +22,18 @@ import { buildPriceSummary } from './booking-pricing';
 export class BookingStore {
   private readonly draftStorageKey = 'skybound-air-draft-v1';
   private readonly bookingStorageKey = 'skybound-air-bookings-v1';
+  private readonly recentSearchesStorageKey = 'skybound-air-recent-searches-v1';
 
   readonly airports = AIRPORTS;
   readonly flights = MOCK_FLIGHTS;
 
   private readonly bookingState = signal<AirlineBooking[]>(this.loadBookings());
   private readonly draftState = signal<BookingDraft>(this.loadDraft());
+  private readonly recentSearchState = signal<FlightSearch[]>(this.loadRecentSearches());
 
   readonly bookings = this.bookingState.asReadonly();
   readonly draft = this.draftState.asReadonly();
+  readonly recentSearches = this.recentSearchState.asReadonly();
   readonly activeSearch = computed(() => this.draftState().search);
   readonly selectedFlights = computed(() => this.draftState().selectedFlights);
   readonly selectedPassengers = computed(() => this.draftState().passengers);
@@ -50,6 +53,7 @@ export class BookingStore {
       paymentMode: null,
       paymentStatus: null
     });
+    this.saveRecentSearch(search);
     this.persistDraft();
   }
 
@@ -148,7 +152,7 @@ export class BookingStore {
       return null;
     }
 
-    const summary = this.buildPriceSummary(draft);
+    const summary = buildPriceSummary(draft);
     const booking: AirlineBooking = {
       id: `SB-BOOK-${1000 + this.bookingState().length + 1}`,
       pnr: this.generatePnr(),
@@ -185,6 +189,12 @@ export class BookingStore {
     return this.bookingState().find((booking) => booking.pnr.toUpperCase() === pnr.toUpperCase());
   }
 
+  getRecentBookings(limit = 5): AirlineBooking[] {
+    return [...this.bookingState()]
+      .sort((left, right) => right.bookedAt.localeCompare(left.bookedAt))
+      .slice(0, limit);
+  }
+
   findBookingByPnrAndLastName(pnr: string, lastName: string): AirlineBooking | undefined {
     return this.bookingState().find(
       (booking) =>
@@ -201,57 +211,6 @@ export class BookingStore {
 
   getAirportName(code: string): string {
     return this.airports.find((airport) => airport.code === code)?.city ?? code;
-  }
-
-  private buildPriceSummary(draft: BookingDraft): {
-    baseFare: number;
-    taxes: number;
-    seats: number;
-    addons: number;
-    total: number;
-  } {
-    const baseFare = draft.selectedFlights.reduce((sum, flight) => sum + flight.baseFare, 0);
-    const taxes = draft.selectedFlights.reduce((sum, flight) => sum + flight.taxes, 0);
-    const seats = draft.seats.reduce((sum, seat) => sum + seat.price, 0);
-    const passengerMultiplier =
-      draft.search.passengers.adults + draft.search.passengers.children + draft.search.passengers.infants;
-    const addons = this.calculateAddonTotal(draft.addons, passengerMultiplier);
-
-    return {
-      baseFare,
-      taxes,
-      seats,
-      addons,
-      total: baseFare + taxes + seats + addons
-    };
-  }
-
-  private calculateAddonTotal(addons: AddonSelection, passengers: number): number {
-    const baggageCharge =
-      addons.baggageOption === '15kg'
-        ? 1350
-        : addons.baggageOption === '20kg'
-          ? 1750
-          : addons.baggageOption === '25kg'
-            ? 2190
-            : 0;
-    const mealCharge =
-      addons.mealBundle === 'Comfort Meal'
-        ? 425
-        : addons.mealBundle === 'Regional Meal'
-          ? 480
-          : addons.mealBundle === 'Fitness Meal'
-            ? 520
-            : 0;
-
-    return (
-      baggageCharge +
-      mealCharge * passengers +
-      (addons.loungeAccess ? 1199 : 0) +
-      (addons.priorityServices ? 749 : 0) +
-      (addons.flexiChange ? 1299 : 0) +
-      (addons.insuranceCover ? 399 : 0)
-    );
   }
 
   private mapPaymentStatus(paymentStatus: PaymentStatus): BookingStatus {
@@ -276,12 +235,20 @@ export class BookingStore {
     return this.readStorage<BookingDraft>(this.draftStorageKey) ?? createEmptyDraft(this.defaultDate());
   }
 
+  private loadRecentSearches(): FlightSearch[] {
+    return this.readStorage<FlightSearch[]>(this.recentSearchesStorageKey) ?? [];
+  }
+
   private persistBookings(): void {
     this.writeStorage(this.bookingStorageKey, this.bookingState());
   }
 
   private persistDraft(): void {
     this.writeStorage(this.draftStorageKey, this.draftState());
+  }
+
+  private persistRecentSearches(): void {
+    this.writeStorage(this.recentSearchesStorageKey, this.recentSearchState());
   }
 
   private readStorage<T>(key: string): T | null {
@@ -301,6 +268,17 @@ export class BookingStore {
     }
   }
 
+  private saveRecentSearch(search: FlightSearch): void {
+    const searchKey = this.searchKey(search);
+    const next = [
+      search,
+      ...this.recentSearchState().filter((item) => this.searchKey(item) !== searchKey)
+    ].slice(0, 5);
+
+    this.recentSearchState.set(next);
+    this.persistRecentSearches();
+  }
+
   private generatePnr(): string {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
@@ -308,5 +286,15 @@ export class BookingStore {
 
   private defaultDate(): string {
     return this.flights[0]?.date ?? new Date().toISOString().slice(0, 10);
+  }
+
+  private searchKey(search: FlightSearch): string {
+    return JSON.stringify({
+      tripType: search.tripType,
+      cabin: search.cabin,
+      passengers: search.passengers,
+      legs: search.legs,
+      promoCode: search.promoCode
+    });
   }
 }
