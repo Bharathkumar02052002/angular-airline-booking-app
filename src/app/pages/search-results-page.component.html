@@ -30,6 +30,34 @@
     </div>
 
     @if (currentLeg()) {
+      <div class="fare-board">
+        <div>
+          <strong>Flexible date view</strong>
+          <span>Switch to a nearby date without going back to the search form.</span>
+        </div>
+
+        <div class="fare-board-grid">
+          @for (option of flexibleDateOptions(); track option.date) {
+            <button
+              type="button"
+              class="fare-day"
+              [class.active]="option.active"
+              [disabled]="!option.flightsCount"
+              (click)="applyFlexibleDate(option.date)"
+            >
+              <strong>{{ option.date | date: 'EEE d MMM' }}</strong>
+              @if (option.cheapestTotal !== null) {
+                <span>{{ option.cheapestTotal | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+                <small>{{ option.flightsCount }} flights</small>
+              } @else {
+                <span>No service</span>
+                <small>Try another day</small>
+              }
+            </button>
+          }
+        </div>
+      </div>
+
       <div class="filter-bar">
         <div class="filter-group">
           <span>Sort</span>

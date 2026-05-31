@@ -27,6 +27,28 @@ export class SearchResultsPageComponent {
     const leg = this.currentLeg();
     return leg ? this.store.getFlightsForLeg(leg.origin, leg.destination, leg.date) : [];
   });
+  protected readonly flexibleDateOptions = computed(() => {
+    const leg = this.currentLeg();
+    if (!leg) {
+      return [];
+    }
+
+    return [-2, -1, 0, 1, 2].map((offset) => {
+      const date = this.shiftDate(leg.date, offset);
+      const flights = this.store.getFlightsForLeg(leg.origin, leg.destination, date);
+      const cheapestTotal = flights.length
+        ? Math.min(...flights.map((flight) => flight.baseFare + flight.taxes))
+        : null;
+
+      return {
+        date,
+        offset,
+        active: date === leg.date,
+        flightsCount: flights.length,
+        cheapestTotal
+      };
+    });
+  });
   protected readonly visibleFlights = computed(() => {
     const fare = this.selectedFare();
     const minSeats = this.minimumSeats();
@@ -88,6 +110,11 @@ export class SearchResultsPageComponent {
     this.minimumSeats.set(value);
   }
 
+  protected applyFlexibleDate(date: string): void {
+    const currentIndex = this.currentLegIndex();
+    this.store.updateLegDate(currentIndex, date);
+  }
+
   protected passengerSummary(): string {
     const passengers = this.search().passengers;
     return `${passengers.adults} Adult${passengers.adults > 1 ? 's' : ''}, ${passengers.children} Child, ${passengers.infants} Infant`;
@@ -111,5 +138,11 @@ export class SearchResultsPageComponent {
     const minutes = Number.parseInt(minutesPart.replace('m', ''), 10);
 
     return hours * 60 + minutes;
+  }
+
+  private shiftDate(dateValue: string, days: number): string {
+    const date = new Date(dateValue);
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10);
   }
 }

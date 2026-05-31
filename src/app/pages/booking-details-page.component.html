@@ -17,6 +17,22 @@
       </div>
 
       <div class="details-grid">
+        @if (readiness(); as readinessState) {
+          <section class="surface-card detail-card">
+            <h2>Trip readiness</h2>
+            <div class="readiness-score">
+              <strong>{{ readinessState.score }}%</strong>
+              <span>{{ tripWindow() }}</span>
+            </div>
+            @for (check of readinessState.checks; track check.label) {
+              <div class="detail-row">
+                <strong>{{ check.label }}</strong>
+                <span>{{ check.done ? 'Done' : 'Pending' }}</span>
+              </div>
+            }
+          </section>
+        }
+
         <section class="surface-card detail-card">
           <h2>Flights</h2>
           @for (flight of item.itinerary; track flight.id) {
@@ -99,6 +115,26 @@
           <div class="detail-row">
             <strong>Booked on</strong>
             <span>{{ item.bookedAt | date: 'EEE, d MMM y, h:mm a' }}</span>
+          </div>
+        </section>
+
+        <section class="surface-card detail-card">
+          <h2>Before you fly</h2>
+          <div class="detail-row">
+            <strong>Check-in timing</strong>
+            <span>Use the PNR 24 hours before departure to simulate web check-in.</span>
+          </div>
+          <div class="detail-row">
+            <strong>Baggage reminder</strong>
+            <span>{{ item.addons.baggageOption === 'None' ? 'Cabin baggage only' : 'Includes extra baggage add-on' }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Seat reminder</strong>
+            <span>{{ item.seats.length ? 'Seats already assigned for this booking.' : 'No seats assigned yet.' }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Meal reminder</strong>
+            <span>{{ item.addons.mealBundle === 'None' ? 'No bundle selected' : item.addons.mealBundle }}</span>
           </div>
         </section>
       </div>

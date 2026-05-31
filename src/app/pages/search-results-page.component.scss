@@ -8,6 +8,7 @@
 .progress-card,
 .selected-card,
 .complete-state,
+.fare-board,
 .empty-results {
   display: grid;
   gap: 1rem;
@@ -16,6 +17,7 @@
 .progress-strip,
 .result-main,
 .selected-card,
+.fare-board-grid,
 .filter-bar,
 .filter-group {
   display: flex;
@@ -30,12 +32,53 @@
 .progress-card,
 .result-card,
 .selected-card,
+.fare-day,
 .complete-state,
 .empty-results {
   padding: 1rem;
   border-radius: 1.25rem;
   border: 1px solid var(--border-soft);
   background: rgba(255, 255, 255, 0.82);
+}
+
+.fare-board {
+  padding: 1rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border-soft);
+  background: rgba(236, 254, 255, 0.45);
+}
+
+.fare-board strong,
+.fare-board span {
+  display: block;
+}
+
+.fare-board > div > span {
+  color: var(--text-muted);
+}
+
+.fare-board-grid {
+  flex-wrap: wrap;
+}
+
+.fare-day {
+  min-width: 9rem;
+  text-align: left;
+}
+
+.fare-day span,
+.fare-day small {
+  color: var(--text-muted);
+}
+
+.fare-day.active {
+  border-color: rgba(14, 116, 144, 0.38);
+  background: rgba(207, 250, 254, 0.92);
+}
+
+.fare-day:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .filter-bar {

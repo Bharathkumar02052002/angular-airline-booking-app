@@ -5,6 +5,7 @@
 .details-panel,
 .detail-card,
 .detail-row,
+.readiness-score,
 .recent-links {
   display: grid;
   gap: 1rem;
@@ -40,6 +41,21 @@
 }
 
 .detail-row span {
+  color: var(--text-muted);
+}
+
+.readiness-score {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(14, 116, 144, 0.08);
+}
+
+.readiness-score strong {
+  font-size: 2rem;
+  font-family: var(--font-display);
+}
+
+.readiness-score span {
   color: var(--text-muted);
 }
 

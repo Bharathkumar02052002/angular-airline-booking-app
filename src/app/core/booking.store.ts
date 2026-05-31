@@ -57,6 +57,27 @@ export class BookingStore {
     this.persistDraft();
   }
 
+  updateLegDate(index: number, date: string): void {
+    const current = this.draftState();
+    const legs = current.search.legs.map((leg, legIndex) =>
+      legIndex === index ? { ...leg, date } : leg
+    );
+    const keptSelections = current.selectedFlights.slice(0, index);
+
+    this.draftState.set({
+      ...current,
+      search: {
+        ...current.search,
+        legs
+      },
+      selectedFlights: keptSelections,
+      seats: [],
+      paymentMode: null,
+      paymentStatus: null
+    });
+    this.persistDraft();
+  }
+
   getFlightsForLeg(origin: string, destination: string, date: string): FlightOption[] {
     return this.flights
       .filter((flight) => flight.origin === origin && flight.destination === destination && flight.date === date)
