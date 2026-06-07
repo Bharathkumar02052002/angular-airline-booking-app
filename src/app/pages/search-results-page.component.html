@@ -113,8 +113,21 @@
                   }
                   <span class="tag">{{ flight.fareFamily }}</span>
                 </div>
+                <div class="insight-list">
+                  <span>On-time {{ flight.onTimeRate }}%</span>
+                  <span>{{ flight.carbonKg }}kg CO2</span>
+                  <span>{{ flight.amenities[0] }}</span>
+                </div>
                 <strong>{{ flight.baseFare + flight.taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
                 <span>{{ flight.seatsLeft }} seats left</span>
+                <button
+                  type="button"
+                  class="button-ghost small"
+                  [disabled]="!canAddToCompare(flight.id)"
+                  (click)="toggleCompare(flight.id)"
+                >
+                  {{ isCompared(flight.id) ? 'Remove compare' : 'Compare' }}
+                </button>
                 <button type="button" class="button-primary" (click)="chooseFlight(flight)">Select fare</button>
               </div>
             </article>
@@ -126,6 +139,56 @@
           </div>
         }
       </div>
+
+      @if (comparedFlights().length) {
+        <div class="compare-board">
+          <div class="compare-header">
+            <div>
+              <strong>Flight compare</strong>
+              <span>Compare up to two flights for this leg.</span>
+            </div>
+            @if (comparedFlights().length < 2) {
+              <span class="tag">Add one more flight</span>
+            }
+          </div>
+
+          <div class="compare-grid">
+            @for (flight of comparedFlights(); track flight.id) {
+              <article class="compare-card">
+                <div class="compare-top">
+                  <strong>{{ flight.flightNumber }}</strong>
+                  <button type="button" class="button-ghost small" (click)="toggleCompare(flight.id)">Remove</button>
+                </div>
+                <div class="summary-row">
+                  <span>Schedule</span>
+                  <strong>{{ flight.departureTime }} - {{ flight.arrivalTime }}</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Total fare</span>
+                  <strong>{{ flight.baseFare + flight.taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+                </div>
+                <div class="summary-row">
+                  <span>On-time rate</span>
+                  <strong>{{ flight.onTimeRate }}%</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Carbon estimate</span>
+                  <strong>{{ flight.carbonKg }}kg CO2</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Seats left</span>
+                  <strong>{{ flight.seatsLeft }}</strong>
+                </div>
+                <div class="tag-list">
+                  @for (amenity of flight.amenities; track amenity) {
+                    <span class="tag">{{ amenity }}</span>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+      }
     } @else {
       <div class="complete-state">
         <span class="pill success">All legs selected</span>

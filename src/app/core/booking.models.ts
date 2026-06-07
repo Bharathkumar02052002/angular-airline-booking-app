@@ -42,6 +42,9 @@ export type FlightOption = {
   baseFare: number;
   taxes: number;
   seatsLeft: number;
+  onTimeRate: number;
+  carbonKg: number;
+  amenities: string[];
   tags: string[];
 };
 

@@ -45,6 +45,19 @@
         </section>
 
         <section class="surface-card detail-card">
+          <h2>Flight insights</h2>
+          @for (segment of segmentInsights(); track segment.flightId) {
+            <div class="detail-row">
+              <strong>{{ segment.flightNumber }} | {{ segment.title }}</strong>
+              <span>On-time rate: {{ segment.onTimeRate }}%</span>
+              <span>Carbon estimate: {{ segment.carbonKg }}kg CO2</span>
+              <span>{{ segment.recommendedGateWindow }}</span>
+              <span>{{ segment.amenityNote }}</span>
+            </div>
+          }
+        </section>
+
+        <section class="surface-card detail-card">
           <h2>Passengers</h2>
           @for (passenger of item.passengers; track passenger.firstName + passenger.lastName) {
             <div class="detail-row">

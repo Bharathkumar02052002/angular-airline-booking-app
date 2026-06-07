@@ -177,6 +177,11 @@ export const MOCK_FLIGHTS: FlightOption[] = [...ROUTES, ...ROUTES.map(reverseRou
         const fareOffset = (dayOffset % 5) * 240 + slotIndex * 310 + routeIndex * 70;
         const totalBaseFare = route.baseFare + fareOffset;
         const fareFamilies = ['Saver', 'Flex', 'Smart Plus'] as const;
+        const amenities = [
+          route.duration.includes('5h') || route.duration.includes('4h') ? 'USB power' : 'Quick boarding',
+          route.destination === 'DXB' || route.destination === 'SIN' ? 'Hot meal' : 'Cafe buy-on-board',
+          slotIndex === 0 ? 'Quiet departure' : slotIndex === 1 ? 'Priority gate' : 'Evening crew pick'
+        ];
 
         return {
           id: buildFlightId(route, date, slotIndex),
@@ -196,6 +201,9 @@ export const MOCK_FLIGHTS: FlightOption[] = [...ROUTES, ...ROUTES.map(reverseRou
           baseFare: totalBaseFare,
           taxes: tax,
           seatsLeft: Math.max(3, 18 - ((dayOffset + slotIndex + routeIndex) % 14)),
+          onTimeRate: Math.min(96, 78 + ((routeIndex + slotIndex + dayOffset) % 17)),
+          carbonKg: 52 + route.duration.length * 3 + slotIndex * 8 + routeIndex * 6,
+          amenities,
           tags: route.tags
         } satisfies FlightOption;
       });

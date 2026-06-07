@@ -15,6 +15,7 @@ export class SearchResultsPageComponent {
   private readonly selectedSort = signal<'price' | 'departure' | 'duration'>('price');
   private readonly selectedFare = signal<'all' | FlightOption['fareFamily']>('all');
   private readonly minimumSeats = signal<0 | 5 | 10>(0);
+  private readonly compareIds = signal<string[]>([]);
   protected readonly store = inject(BookingStore);
 
   protected readonly search = this.store.activeSearch;
@@ -72,6 +73,12 @@ export class SearchResultsPageComponent {
       }
     });
   });
+  protected readonly comparedFlights = computed(() => {
+    const ids = this.compareIds();
+    return ids
+      .map((id) => this.flightOptions().find((flight) => flight.id === id))
+      .filter((flight): flight is FlightOption => Boolean(flight));
+  });
 
   constructor() {
     if (!this.search().legs.length) {
@@ -81,6 +88,7 @@ export class SearchResultsPageComponent {
 
   protected chooseFlight(flight: FlightOption): void {
     this.store.selectFlight(flight);
+    this.compareIds.set([]);
 
     if (this.store.itineraryComplete()) {
       void this.router.navigate(['/travellers']);
@@ -113,6 +121,30 @@ export class SearchResultsPageComponent {
   protected applyFlexibleDate(date: string): void {
     const currentIndex = this.currentLegIndex();
     this.store.updateLegDate(currentIndex, date);
+    this.compareIds.set([]);
+  }
+
+  protected toggleCompare(flightId: string): void {
+    const current = this.compareIds();
+    if (current.includes(flightId)) {
+      this.compareIds.set(current.filter((id) => id !== flightId));
+      return;
+    }
+
+    if (current.length >= 2) {
+      this.compareIds.set([current[1], flightId]);
+      return;
+    }
+
+    this.compareIds.set([...current, flightId]);
+  }
+
+  protected isCompared(flightId: string): boolean {
+    return this.compareIds().includes(flightId);
+  }
+
+  protected canAddToCompare(flightId: string): boolean {
+    return this.isCompared(flightId) || this.compareIds().length < 2;
   }
 
   protected passengerSummary(): string {

@@ -9,6 +9,7 @@
 .selected-card,
 .complete-state,
 .fare-board,
+.compare-board,
 .empty-results {
   display: grid;
   gap: 1rem;
@@ -18,6 +19,9 @@
 .result-main,
 .selected-card,
 .fare-board-grid,
+.compare-grid,
+.compare-top,
+.compare-header,
 .filter-bar,
 .filter-group {
   display: flex;
@@ -33,6 +37,7 @@
 .result-card,
 .selected-card,
 .fare-day,
+.compare-card,
 .complete-state,
 .empty-results {
   padding: 1rem;
@@ -48,6 +53,13 @@
   background: rgba(236, 254, 255, 0.45);
 }
 
+.compare-board {
+  padding: 1rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border-soft);
+  background: rgba(248, 250, 252, 0.7);
+}
+
 .fare-board strong,
 .fare-board span {
   display: block;
@@ -59,6 +71,25 @@
 
 .fare-board-grid {
   flex-wrap: wrap;
+}
+
+.compare-grid {
+  flex-wrap: wrap;
+}
+
+.compare-card {
+  min-width: 18rem;
+  flex: 1 1 18rem;
+}
+
+.compare-top,
+.compare-header {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.compare-header span {
+  color: var(--text-muted);
 }
 
 .fare-day {
@@ -186,6 +217,22 @@
   justify-items: end;
 }
 
+.insight-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+.insight-list span {
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(14, 116, 144, 0.08);
+  color: var(--brand-700);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .small {
   min-height: auto;
   padding: 0.55rem 0.9rem;
@@ -206,6 +253,10 @@
 
   .result-side {
     justify-items: start;
+  }
+
+  .insight-list {
+    justify-content: flex-start;
   }
 }
 

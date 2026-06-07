@@ -21,6 +21,22 @@ export class BookingDetailsPageComponent {
 
   protected readonly booking = computed(() => this.store.getBookingByPnr(this.pnr()));
   protected readonly recentBookings = this.store.getRecentBookings(3);
+  protected readonly segmentInsights = computed(() => {
+    const booking = this.booking();
+    if (!booking) {
+      return [];
+    }
+
+    return booking.itinerary.map((flight) => ({
+      flightId: flight.id,
+      flightNumber: flight.flightNumber,
+      title: `${flight.origin} - ${flight.destination}`,
+      onTimeRate: flight.onTimeRate,
+      carbonKg: flight.carbonKg,
+      recommendedGateWindow: flight.terminal === 'T3' ? 'Reach gate 45 min before departure' : 'Reach gate 35 min before departure',
+      amenityNote: flight.amenities.join(' | ')
+    }));
+  });
   protected readonly readiness = computed(() => {
     const booking = this.booking();
     if (!booking) {
