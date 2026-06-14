@@ -7,6 +7,15 @@
       flow.
     </p>
 
+    <div class="bundle-card">
+      <div>
+        <p class="eyebrow">Suggested bundle</p>
+        <strong>{{ bundleSuggestion().title }}</strong>
+        <p>{{ bundleSuggestion().description }}</p>
+      </div>
+      <button type="button" class="button-secondary" (click)="applySuggestedBundle()">Apply suggestion</button>
+    </div>
+
     <form [formGroup]="form" class="addon-grid" (ngSubmit)="saveAndContinue()">
       <article class="addon-card">
         <strong>Extra baggage</strong>
@@ -69,6 +78,10 @@
   <aside class="sidebar-card surface-card">
     <p class="eyebrow">Running total</p>
     <div class="summary-list">
+      <div class="summary-row">
+        <span>Selected extras</span>
+        <strong>{{ selectedAddonCount() }}</strong>
+      </div>
       <div class="summary-row">
         <span>Flights and taxes</span>
         <strong>{{ store.priceSummary().baseFare + store.priceSummary().taxes | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>

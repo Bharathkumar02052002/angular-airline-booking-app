@@ -9,6 +9,18 @@
   color: var(--text-muted);
 }
 
+.payment-note {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(14, 116, 144, 0.08);
+}
+
+.payment-note span {
+  color: var(--text-muted);
+}
+
 .span-4 {
   grid-column: span 4;
 }

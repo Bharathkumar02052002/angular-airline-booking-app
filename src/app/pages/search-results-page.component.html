@@ -82,6 +82,20 @@
         </div>
       </div>
 
+      @if (recommendedFlights().length) {
+        <div class="recommend-strip">
+          @for (item of recommendedFlights(); track item.label) {
+            <article class="recommend-card">
+              <span class="eyebrow">{{ item.label }}</span>
+              <strong>{{ item.flight.flightNumber }}</strong>
+              <span>{{ item.flight.departureTime }} - {{ item.flight.arrivalTime }} | {{ item.flight.duration }}</span>
+              <span>{{ item.note }}</span>
+              <button type="button" class="button-ghost small" (click)="chooseFlight(item.flight)">Pick this</button>
+            </article>
+          }
+        </div>
+      }
+
       <div class="results-list">
         @if (visibleFlights().length) {
           @for (flight of visibleFlights(); track flight.id) {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BookingStore } from '../core/booking.store';
@@ -16,6 +16,29 @@ export class PaymentPageComponent {
   private readonly router = inject(Router);
   protected readonly store = inject(BookingStore);
   protected processing = false;
+  protected readonly summary = this.store.priceSummary;
+  protected readonly travellerCount = computed(() => {
+    const passengers = this.store.activeSearch().passengers;
+    return passengers.adults + passengers.children + passengers.infants;
+  });
+  protected readonly perTravellerCost = computed(() => {
+    const count = this.travellerCount();
+    return count ? Math.round(this.summary().total / count) : 0;
+  });
+  protected readonly paymentHint = computed(() => {
+    const mode = this.form.get('paymentMode')?.value as PaymentMode;
+
+    switch (mode) {
+      case 'UPI':
+        return 'Fastest path for the demo checkout and easiest to explain in a walkthrough.';
+      case 'Card':
+        return 'Best option to talk about tokenized payments and EMI support in a real app.';
+      case 'Net Banking':
+        return 'Useful for showing alternate payment rails in a booking product.';
+      default:
+        return '';
+    }
+  });
 
   protected readonly form = this.formBuilder.group({
     paymentMode: ['UPI' as PaymentMode, Validators.required],

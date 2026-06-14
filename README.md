@@ -10,15 +10,21 @@ Angular airline booking demo with a complete booking flow and PNR lookup.
 - fare sorting and filtering on the search results page
 - flexible-date fare board for nearby travel dates
 - side-by-side flight comparison on the search results page
+- recommended-flight strip for best fare, fastest, and lower-carbon options
 - traveller details with reactive form validation
 - seat selection with zone-based pricing
 - add-ons such as baggage, meals, lounge, flexi change, and insurance
+- smart add-on bundle recommendation based on route and traveller mix
 - fake payment flow with success, pending, and failed outcomes
+- per-traveller cost summary and payment-mode guidance on checkout
 - booking confirmation with generated PNR
+- loyalty-points estimate and next-step cards on confirmation
 - manage-booking flow with PNR and last-name lookup
 - recent-booking shortcuts and contact/payment details in manage booking
 - trip readiness score and pre-departure checklist in manage booking
 - flight insight cards with punctuality, carbon estimate, and onboard amenities
+- cancellation refund estimate and airport timeline in manage booking
+- fare-rules snapshot in manage booking
 - local persistence so created bookings can be retrieved after refresh
 
 ## Tech stack

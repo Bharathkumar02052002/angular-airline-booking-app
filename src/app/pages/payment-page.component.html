@@ -43,6 +43,11 @@
         <span>I understand this portfolio app uses a simulated payment experience.</span>
       </label>
 
+      <div class="payment-note">
+        <strong>Payment mode note</strong>
+        <span>{{ paymentHint() }}</span>
+      </div>
+
       <button type="submit" class="button-primary" [disabled]="processing">
         {{ processing ? 'Processing...' : 'Pay and confirm booking' }}
       </button>
@@ -70,7 +75,15 @@
       </div>
       <div class="summary-row">
         <span>Total payable</span>
-        <strong>{{ store.priceSummary().total | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+        <strong>{{ summary().total | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Travellers</span>
+        <strong>{{ travellerCount() }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Average per traveller</span>
+        <strong>{{ perTravellerCost() | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
       </div>
     </div>
   </aside>

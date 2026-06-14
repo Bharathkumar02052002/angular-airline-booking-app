@@ -5,6 +5,8 @@
 .confirmation,
 .summary-panel,
 .segment,
+.loyalty-card,
+.next-step-list,
 .empty-state {
   display: grid;
   gap: 1rem;
@@ -42,6 +44,23 @@
 
 .segment span {
   color: var(--text-muted);
+}
+
+.loyalty-card {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(14, 116, 144, 0.08);
+}
+
+.loyalty-card strong {
+  font-size: 2rem;
+  font-family: var(--font-display);
+}
+
+.loyalty-card span,
+.loyalty-card p {
+  color: var(--text-muted);
+  margin: 0;
 }
 
 @media (max-width: 900px) {

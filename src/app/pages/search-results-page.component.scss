@@ -10,6 +10,7 @@
 .complete-state,
 .fare-board,
 .compare-board,
+.recommend-strip,
 .empty-results {
   display: grid;
   gap: 1rem;
@@ -22,6 +23,7 @@
 .compare-grid,
 .compare-top,
 .compare-header,
+.recommend-strip,
 .filter-bar,
 .filter-group {
   display: flex;
@@ -58,6 +60,28 @@
   border-radius: 1.25rem;
   border: 1px solid var(--border-soft);
   background: rgba(248, 250, 252, 0.7);
+}
+
+.recommend-strip {
+  flex-wrap: wrap;
+}
+
+.recommend-card {
+  flex: 1 1 15rem;
+  padding: 1rem;
+  border-radius: 1.2rem;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.88);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.recommend-card strong {
+  font-size: 1.1rem;
+}
+
+.recommend-card span:last-of-type {
+  color: var(--text-muted);
 }
 
 .fare-board strong,

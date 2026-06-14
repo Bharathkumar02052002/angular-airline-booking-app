@@ -91,4 +91,87 @@ export class BookingDetailsPageComponent {
 
     return 'Trip is scheduled further out. You can still review seats, meals, and baggage.';
   });
+  protected readonly refundEstimate = computed(() => {
+    const booking = this.booking();
+    const firstFlight = booking?.itinerary[0];
+
+    if (!booking || !firstFlight) {
+      return null;
+    }
+
+    const departure = new Date(`${firstFlight.date}T${firstFlight.departureTime}:00`);
+    const hoursToDeparture = Math.round((departure.getTime() - Date.now()) / (1000 * 60 * 60));
+    const refundableBase = booking.baseFareTotal + booking.taxTotal;
+
+    let refundRate = 0.75;
+    let fee = 1800;
+    let note = 'Cancellation is still relatively flexible.';
+
+    if (hoursToDeparture <= 72) {
+      refundRate = 0.55;
+      fee = 2500;
+      note = 'Closer to departure, so the estimated refund is lower.';
+    }
+
+    if (hoursToDeparture <= 24) {
+      refundRate = 0.3;
+      fee = 3200;
+      note = 'Last-day cancellation window. Most of the fare is retained.';
+    }
+
+    if (booking.paymentStatus !== 'Success') {
+      refundRate = 0;
+      fee = 0;
+      note = 'No completed payment was captured for this booking.';
+    }
+
+    const refundAmount = Math.max(0, Math.round(refundableBase * refundRate - fee));
+
+    return {
+      hoursToDeparture,
+      refundAmount,
+      fee,
+      note
+    };
+  });
+  protected readonly fareRules = computed(() => {
+    const booking = this.booking();
+    if (!booking) {
+      return [];
+    }
+
+    return [
+      {
+        label: 'Date change rule',
+        detail: booking.addons.flexiChange ? 'Flexi change add-on is active for this booking.' : 'Standard fare difference and airline fee would apply.'
+      },
+      {
+        label: 'Refund handling',
+        detail: booking.paymentStatus === 'Success' ? 'Refunds go back to the original payment source in this demo.' : 'No completed charge captured yet.'
+      },
+      {
+        label: 'Meal and baggage rule',
+        detail:
+          booking.addons.mealBundle === 'None' && booking.addons.baggageOption === 'None'
+            ? 'No optional meal or baggage service attached.'
+            : 'Add-on services are tied to this PNR and visible at check-in.'
+      }
+    ];
+  });
+  protected readonly airportTimeline = computed(() => {
+    const booking = this.booking();
+    const firstFlight = booking?.itinerary[0];
+
+    if (!firstFlight) {
+      return [];
+    }
+
+    const international = firstFlight.destination === 'DXB' || firstFlight.destination === 'SIN';
+    return [
+      { label: 'Web check-in', note: international ? 'Open 48h before departure' : 'Open 24h before departure' },
+      { label: 'Airport arrival', note: international ? 'Reach airport 3h before departure' : 'Reach airport 2h before departure' },
+      { label: 'Bag drop', note: international ? 'Complete 75 min before departure' : 'Complete 60 min before departure' },
+      { label: 'Boarding gate', note: firstFlight.terminal === 'T3' ? 'Be at gate 45 min before departure' : 'Be at gate 35 min before departure' }
+    ];
+  });
 }

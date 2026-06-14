@@ -111,6 +111,24 @@
           </div>
         </section>
 
+        @if (refundEstimate(); as refund) {
+          <section class="surface-card detail-card">
+            <h2>Cancellation estimate</h2>
+            <div class="readiness-score">
+              <strong>{{ refund.refundAmount | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+              <span>{{ refund.note }}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Hours to departure</strong>
+              <span>{{ refund.hoursToDeparture }}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Estimated airline fee</strong>
+              <span>{{ refund.fee | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+            </div>
+          </section>
+        }
+
         <section class="surface-card detail-card">
           <h2>Contact and payment</h2>
           <div class="detail-row">
@@ -149,6 +167,26 @@
             <strong>Meal reminder</strong>
             <span>{{ item.addons.mealBundle === 'None' ? 'No bundle selected' : item.addons.mealBundle }}</span>
           </div>
+        </section>
+
+        <section class="surface-card detail-card">
+          <h2>Airport timeline</h2>
+          @for (step of airportTimeline(); track step.label) {
+            <div class="detail-row">
+              <strong>{{ step.label }}</strong>
+              <span>{{ step.note }}</span>
+            </div>
+          }
+        </section>
+
+        <section class="surface-card detail-card">
+          <h2>Fare rules snapshot</h2>
+          @for (rule of fareRules(); track rule.label) {
+            <div class="detail-row">
+              <strong>{{ rule.label }}</strong>
+              <span>{{ rule.detail }}</span>
+            </div>
+          }
         </section>
       </div>
 

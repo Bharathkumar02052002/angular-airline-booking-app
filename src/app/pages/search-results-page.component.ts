@@ -79,6 +79,38 @@ export class SearchResultsPageComponent {
       .map((id) => this.flightOptions().find((flight) => flight.id === id))
       .filter((flight): flight is FlightOption => Boolean(flight));
   });
+  protected readonly recommendedFlights = computed(() => {
+    const flights = this.visibleFlights();
+    if (!flights.length) {
+      return [];
+    }
+
+    const cheapest = [...flights].sort(
+      (left, right) => left.baseFare + left.taxes - (right.baseFare + right.taxes)
+    )[0];
+    const fastest = [...flights].sort(
+      (left, right) => this.durationToMinutes(left.duration) - this.durationToMinutes(right.duration)
+    )[0];
+    const greenest = [...flights].sort((left, right) => left.carbonKg - right.carbonKg)[0];
+
+    return [
+      {
+        label: 'Best fare',
+        note: 'Lowest total for this filter set',
+        flight: cheapest
+      },
+      {
+        label: 'Fastest',
+        note: 'Shortest travel time',
+        flight: fastest
+      },
+      {
+        label: 'Lower carbon',
+        note: 'Lightest estimated footprint',
+        flight: greenest
+      }
+    ];
+  });
 
   constructor() {
     if (!this.search().legs.length) {

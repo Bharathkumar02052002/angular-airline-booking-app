@@ -59,6 +59,31 @@
       </div>
     </div>
 
+    @if (loyaltySummary(); as loyalty) {
+      <div class="confirmation-grid">
+        <div class="surface-card summary-panel">
+          <h2>Loyalty estimate</h2>
+          <div class="loyalty-card">
+            <strong>{{ loyalty.points }}</strong>
+            <span>estimated points from this booking</span>
+            <p>{{ loyalty.tierNote }}</p>
+          </div>
+        </div>
+
+        <div class="surface-card summary-panel">
+          <h2>What to do next</h2>
+          <div class="next-step-list">
+            @for (step of nextSteps(); track step.label) {
+              <div class="segment">
+                <strong>{{ step.label }}</strong>
+                <span>{{ step.detail }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
     <div class="action-row">
       <a class="button-primary" [routerLink]="['/my-trips', item.pnr]">Open manage booking</a>
       <a class="button-secondary" routerLink="/">Book another trip</a>

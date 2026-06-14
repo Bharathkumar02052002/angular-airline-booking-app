@@ -20,4 +20,45 @@ export class ConfirmationPageComponent {
   });
 
   protected readonly booking = computed(() => this.store.getBookingByPnr(this.pnr()));
+  protected readonly loyaltySummary = computed(() => {
+    const booking = this.booking();
+    if (!booking) {
+      return null;
+    }
+
+    const basePoints = Math.floor(booking.baseFareTotal / 12);
+    const bonusPoints =
+      (booking.paymentStatus === 'Success' ? 180 : 0) +
+      (booking.addons.flexiChange ? 60 : 0) +
+      (booking.addons.insuranceCover ? 40 : 0);
+
+    return {
+      points: basePoints + bonusPoints,
+      tierNote:
+        booking.search.cabin === 'Business'
+          ? 'Business cabin earns a small bonus in this demo.'
+          : 'Economy and Premium Economy keep the points estimate simple.'
+    };
+  });
+  protected readonly nextSteps = computed(() => {
+    const booking = this.booking();
+    if (!booking) {
+      return [];
+    }
+
+    return [
+      {
+        label: 'Save your PNR',
+        detail: `Keep ${booking.pnr} handy for lookup and manage-booking actions.`
+      },
+      {
+        label: 'Review passengers',
+        detail: `${booking.passengers.length} traveller${booking.passengers.length > 1 ? 's are' : ' is'} attached to this booking.`
+      },
+      {
+        label: 'Check extras',
+        detail: booking.addons.baggageOption === 'None' ? 'No extra baggage added yet.' : `Baggage add-on: ${booking.addons.baggageOption}.`
+      }
+    ];
+  });
 }
