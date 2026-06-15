@@ -23,7 +23,10 @@ export class PassengerDetailsPageComponent {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.minLength(10)]],
       city: ['', [Validators.required, Validators.minLength(2)]],
-      receiveAlerts: [true]
+      receiveAlerts: [true],
+      travelPurpose: ['Leisure'],
+      assistanceRequired: [false],
+      assistanceNotes: ['']
     }),
     passengers: this.formBuilder.array([])
   });
@@ -66,7 +69,10 @@ export class PassengerDetailsPageComponent {
       email: contact.email ?? '',
       phone: contact.phone ?? '',
       city: contact.city ?? '',
-      receiveAlerts: Boolean(contact.receiveAlerts)
+      receiveAlerts: Boolean(contact.receiveAlerts),
+      travelPurpose: contact.travelPurpose ?? 'Leisure',
+      assistanceRequired: Boolean(contact.assistanceRequired),
+      assistanceNotes: contact.assistanceNotes ?? ''
     });
 
     void this.router.navigate(['/seats']);
@@ -94,7 +100,9 @@ export class PassengerDetailsPageComponent {
       gender: [saved?.gender ?? 'Male', Validators.required],
       dateOfBirth: [saved?.dateOfBirth ?? '', Validators.required],
       mealPreference: [saved?.mealPreference ?? 'No meal', Validators.required],
-      frequentFlyerId: [saved?.frequentFlyerId ?? '']
+      frequentFlyerId: [saved?.frequentFlyerId ?? ''],
+      documentType: [saved?.documentType ?? (type === 'Child' ? 'School ID' : 'Aadhaar'), Validators.required],
+      documentNumber: [saved?.documentNumber ?? '', [Validators.required, Validators.minLength(4)]]
     });
   }
 }

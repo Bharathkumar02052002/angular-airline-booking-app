@@ -61,4 +61,24 @@ export class ConfirmationPageComponent {
       }
     ];
   });
+  protected readonly documentChecklist = computed(() => {
+    const booking = this.booking();
+    if (!booking) {
+      return [];
+    }
+
+    const international = booking.itinerary.some(
+      (flight) => flight.destination === 'DXB' || flight.destination === 'SIN'
+    );
+
+    return booking.passengers.map((passenger) => ({
+      name: `${passenger.firstName} ${passenger.lastName}`,
+      documentType: passenger.documentType || 'Document not added',
+      note: international
+        ? passenger.documentType === 'Passport'
+          ? 'Passport recorded for international travel.'
+          : 'International trips usually require a passport.'
+        : `${passenger.documentType || 'ID document'} added for domestic ID reference.`
+    }));
+  });
 }

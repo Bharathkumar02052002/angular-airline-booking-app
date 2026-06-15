@@ -158,6 +158,30 @@ export class BookingDetailsPageComponent {
       }
     ];
   });
+  protected readonly travellerServices = computed(() => {
+    const booking = this.booking();
+    if (!booking) {
+      return null;
+    }
+
+    return {
+      purpose: booking.contact.travelPurpose || 'Leisure',
+      assistanceRequired: Boolean(booking.contact.assistanceRequired),
+      assistanceNotes: booking.contact.assistanceNotes || 'No assistance notes added.'
+    };
+  });
+  protected readonly documentSummary = computed(() => {
+    const booking = this.booking();
+    if (!booking) {
+      return [];
+    }
+
+    return booking.passengers.map((passenger) => ({
+      name: `${passenger.firstName} ${passenger.lastName}`,
+      documentType: passenger.documentType || 'Document not added',
+      documentNumber: this.maskDocument(passenger.documentNumber || 'Not provided')
+    }));
+  });
   protected readonly airportTimeline = computed(() => {
     const booking = this.booking();
     const firstFlight = booking?.itinerary[0];
@@ -174,4 +198,12 @@ export class BookingDetailsPageComponent {
       { label: 'Boarding gate', note: firstFlight.terminal === 'T3' ? 'Be at gate 45 min before departure' : 'Be at gate 35 min before departure' }
     ];
   });
+
+  private maskDocument(documentNumber: string): string {
+    if (documentNumber.length <= 4) {
+      return documentNumber;
+    }
+
+    return `${'*'.repeat(documentNumber.length - 4)}${documentNumber.slice(-4)}`;
+  }
 }

@@ -84,6 +84,20 @@
       </div>
     }
 
+    @if (documentChecklist().length) {
+      <div class="surface-card summary-panel">
+        <h2>Document checklist</h2>
+        <div class="next-step-list">
+          @for (item of documentChecklist(); track item.name) {
+            <div class="segment">
+              <strong>{{ item.name }} | {{ item.documentType }}</strong>
+              <span>{{ item.note }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
     <div class="action-row">
       <a class="button-primary" [routerLink]="['/my-trips', item.pnr]">Open manage booking</a>
       <a class="button-secondary" routerLink="/">Book another trip</a>

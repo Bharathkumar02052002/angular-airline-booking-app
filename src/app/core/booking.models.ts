@@ -57,6 +57,8 @@ export type PassengerDetails = {
   dateOfBirth: string;
   mealPreference: 'No meal' | 'Veg combo' | 'Asian meal' | 'Protein box';
   frequentFlyerId: string;
+  documentType: 'Passport' | 'Aadhaar' | 'Driving License' | 'School ID';
+  documentNumber: string;
 };
 
 export type ContactDetails = {
@@ -64,6 +66,9 @@ export type ContactDetails = {
   phone: string;
   city: string;
   receiveAlerts: boolean;
+  travelPurpose: 'Business' | 'Leisure' | 'Family Visit' | 'Medical';
+  assistanceRequired: boolean;
+  assistanceNotes: string;
 };
 
 export type SeatZone = 'Standard' | 'Preferred' | 'XL';

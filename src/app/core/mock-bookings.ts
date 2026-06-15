@@ -31,7 +31,9 @@ const samplePassengers: PassengerDetails[] = [
     gender: 'Female',
     dateOfBirth: '1992-02-18',
     mealPreference: 'No meal',
-    frequentFlyerId: 'SB224801'
+    frequentFlyerId: 'SB224801',
+    documentType: 'Aadhaar',
+    documentNumber: 'AADA-6621'
   },
   {
     passengerType: 'Child',
@@ -41,7 +43,9 @@ const samplePassengers: PassengerDetails[] = [
     gender: 'Male',
     dateOfBirth: '2017-09-12',
     mealPreference: 'No meal',
-    frequentFlyerId: ''
+    frequentFlyerId: '',
+    documentType: 'School ID',
+    documentNumber: 'SCH-2048'
   }
 ];
 
@@ -49,7 +53,10 @@ const sampleContact: ContactDetails = {
   email: 'meera.raman@example.com',
   phone: '9876543210',
   city: 'Chennai',
-  receiveAlerts: true
+  receiveAlerts: true,
+  travelPurpose: 'Family Visit',
+  assistanceRequired: false,
+  assistanceNotes: ''
 };
 
 const sampleAddons: AddonSelection = {

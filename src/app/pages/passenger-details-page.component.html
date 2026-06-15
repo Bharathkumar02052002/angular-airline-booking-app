@@ -29,6 +29,26 @@
             <label>City</label>
             <input type="text" formControlName="city" placeholder="Chennai">
           </div>
+          <div class="field span-4">
+            <label>Travel purpose</label>
+            <select formControlName="travelPurpose">
+              <option value="Business">Business</option>
+              <option value="Leisure">Leisure</option>
+              <option value="Family Visit">Family visit</option>
+              <option value="Medical">Medical</option>
+            </select>
+          </div>
+          <div class="field span-4">
+            <label>Special assistance required</label>
+            <select formControlName="assistanceRequired">
+              <option [ngValue]="false">No</option>
+              <option [ngValue]="true">Yes</option>
+            </select>
+          </div>
+          <div class="field span-4">
+            <label>Assistance notes</label>
+            <input type="text" formControlName="assistanceNotes" placeholder="Wheelchair, senior escort, medical note">
+          </div>
         </div>
       </section>
 
@@ -96,6 +116,24 @@
               <div class="field span-3">
                 <label>Frequent flyer ID</label>
                 <input type="text" formControlName="frequentFlyerId" placeholder="Optional">
+              </div>
+
+              <div class="field span-3">
+                <label>Document type</label>
+                <select formControlName="documentType">
+                  <option value="Passport">Passport</option>
+                  <option value="Aadhaar">Aadhaar</option>
+                  <option value="Driving License">Driving license</option>
+                  <option value="School ID">School ID</option>
+                </select>
+              </div>
+
+              <div class="field span-3">
+                <label>Document number</label>
+                <input type="text" formControlName="documentNumber" placeholder="ID reference">
+                @if (controlInvalid(passenger.get('documentNumber'))) {
+                  <span class="field-error">Document number is required.</span>
+                }
               </div>
             </div>
           </section>

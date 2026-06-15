@@ -68,6 +68,35 @@
           }
         </section>
 
+        @if (travellerServices(); as services) {
+          <section class="surface-card detail-card">
+            <h2>Traveller services</h2>
+            <div class="detail-row">
+              <strong>Travel purpose</strong>
+              <span>{{ services.purpose }}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Special assistance</strong>
+              <span>{{ services.assistanceRequired ? 'Requested' : 'Not requested' }}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Assistance notes</strong>
+              <span>{{ services.assistanceNotes }}</span>
+            </div>
+          </section>
+        }
+
+        <section class="surface-card detail-card">
+          <h2>Traveller documents</h2>
+          @for (doc of documentSummary(); track doc.name) {
+            <div class="detail-row">
+              <strong>{{ doc.name }}</strong>
+              <span>{{ doc.documentType }}</span>
+              <span>{{ doc.documentNumber }}</span>
+            </div>
+          }
+        </section>
+
         <section class="surface-card detail-card">
           <h2>Seats and add-ons</h2>
           @for (seat of item.seats; track seat.seatNumber) {
