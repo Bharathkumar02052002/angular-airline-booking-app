@@ -18,6 +18,7 @@
       </div>
 
       <button type="submit" class="button-primary">Find booking</button>
+      <button type="button" class="button-ghost" (click)="fillSampleBooking()">Use sample booking</button>
 
       @if (lookupError) {
         <p class="field-error">{{ lookupError }}</p>
@@ -28,7 +29,7 @@
   <article class="surface-card helper-panel">
     <p class="eyebrow">Sample data</p>
     <h2 class="section-title">Use the seeded booking</h2>
-    <p class="section-copy">PNR: SB6Q2P | Last name: Raman. You can also create a new booking from the home page.</p>
+    <p class="section-copy">PNR: {{ samplePnr }} | Last name: {{ sampleLastName }}. You can also create a new booking from the home page.</p>
     <a class="button-secondary" routerLink="/">Create a new booking</a>
   </article>
 </section>

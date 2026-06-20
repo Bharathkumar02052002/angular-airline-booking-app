@@ -14,12 +14,14 @@ export class PnrLookupPageComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly router = inject(Router);
   protected readonly store = inject(BookingStore);
+  protected readonly samplePnr = 'SB6Q2P';
+  protected readonly sampleLastName = 'Raman';
   protected lookupError = '';
   protected readonly recentBookings = this.store.getRecentBookings(4);
 
   protected readonly form = this.formBuilder.group({
-    pnr: ['SB6Q2P', [Validators.required, Validators.minLength(6)]],
-    lastName: ['Raman', [Validators.required, Validators.minLength(2)]]
+    pnr: [this.samplePnr, [Validators.required, Validators.minLength(6)]],
+    lastName: [this.sampleLastName, [Validators.required, Validators.minLength(2)]]
   });
 
   protected lookup(): void {
@@ -44,5 +46,13 @@ export class PnrLookupPageComponent {
 
   protected openRecentBooking(pnr: string): void {
     void this.router.navigate(['/my-trips', pnr]);
+  }
+
+  protected fillSampleBooking(): void {
+    this.lookupError = '';
+    this.form.patchValue({
+      pnr: this.samplePnr,
+      lastName: this.sampleLastName
+    });
   }
 }

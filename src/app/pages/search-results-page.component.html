@@ -80,6 +80,10 @@
           <button type="button" class="filter-chip" [class.active]="currentMinSeats() === 5" (click)="setMinimumSeats(5)">5+</button>
           <button type="button" class="filter-chip" [class.active]="currentMinSeats() === 10" (click)="setMinimumSeats(10)">10+</button>
         </div>
+
+        <div class="filter-group">
+          <button type="button" class="button-ghost small" (click)="resetFilters()">Reset filters</button>
+        </div>
       </div>
 
       @if (recommendedFlights().length) {

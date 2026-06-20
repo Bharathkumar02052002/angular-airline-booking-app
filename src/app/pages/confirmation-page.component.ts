@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { BookingStore } from '../core/booking.store';
 })
 export class ConfirmationPageComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly copied = signal(false);
   protected readonly store = inject(BookingStore);
 
   private readonly pnr = toSignal(this.route.paramMap.pipe(map((params) => params.get('pnr') ?? '')), {
@@ -81,4 +82,19 @@ export class ConfirmationPageComponent {
         : `${passenger.documentType || 'ID document'} added for domestic ID reference.`
     }));
   });
+
+  protected copiedState(): boolean {
+    return this.copied();
+  }
+
+  protected async copyPnr(): Promise<void> {
+    const booking = this.booking();
+    if (!booking || !navigator?.clipboard) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(booking.pnr);
+    this.copied.set(true);
+    setTimeout(() => this.copied.set(false), 1800);
+  }
 }

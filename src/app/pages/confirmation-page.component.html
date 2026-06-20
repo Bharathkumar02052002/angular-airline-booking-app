@@ -10,6 +10,10 @@
         </p>
       </div>
 
+      <button type="button" class="button-ghost small" (click)="copyPnr()">
+        {{ copiedState() ? 'PNR copied' : 'Copy PNR' }}
+      </button>
+
       <span
         class="pill"
         [class.success]="item.status === 'Confirmed'"

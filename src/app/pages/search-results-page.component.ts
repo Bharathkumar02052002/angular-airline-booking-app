@@ -150,6 +150,13 @@ export class SearchResultsPageComponent {
     this.minimumSeats.set(value);
   }
 
+  protected resetFilters(): void {
+    this.selectedSort.set('price');
+    this.selectedFare.set('all');
+    this.minimumSeats.set(0);
+    this.compareIds.set([]);
+  }
+
   protected applyFlexibleDate(date: string): void {
     const currentIndex = this.currentLegIndex();
     this.store.updateLegDate(currentIndex, date);
